@@ -14,30 +14,6 @@ if (process.env.API_URL) {
 
 const router = new Navigo(window.location.origin);
 
-router.hooks({
-  before: (done, params) => {
-    // Because not all routes pass params we have to guard against is being undefined
-    const page =
-      params && Object.prototype.hasOwnProperty.call(params, "page")
-        ? capitalize(params.page)
-        : "Home";
-    fetchDataByView(state[page]);
-    done();
-  }
-});
-
-router
-  .on({
-    "/": () => {
-      render(state.Home);
-    },
-    ":page": params => {
-      render(state[capitalize(params.page)]);
-    }
-  })
-  .resolve();
-// Added this ^^^
-
 function render(st = state.Home) {
   document.querySelector("#root").innerHTML = `
     ${Header(st)}
@@ -117,7 +93,7 @@ function addEventListenersByView(st) {
   }
 }
 
-function fetchDataByView(st = state.Home) {
+function fetchDataByView(done, st = state.Home) {
   switch (st.view) {
     case "Pizza":
       axios
@@ -125,14 +101,56 @@ function fetchDataByView(st = state.Home) {
         .then(response => {
           state[st.view].pizzas = response.data;
           render(st);
+          done();
         })
         .catch(error => {
           console.log("It puked", error);
+          done();
         });
       break;
-    case "Bio":
+    case "Blog":
+      state.Blog.posts = [];
+      axios.get("https://jsonplaceholder.typicode.com/posts").then(response => {
+        response.data.forEach(post => {
+          state.Blog.posts.push(post);
+          done();
+        });
+      });
       break;
-    case "Gallery":
-      break;
+    default:
+      axios
+      .get(
+        `https://api.openweathermap.org/data/2.5/weather?appid=fbb30b5d6cf8e164ed522e5082b49064&q=st.%20louis`
+      )
+      .then(response => {
+        state.Home.weather = {};
+        state.Home.weather.city = response.data.name;
+        state.Home.weather.temp = response.data.main.temp;
+        state.Home.weather.feelsLike = response.data.main.feels_like;
+        state.Home.weather.description = response.data.weather[0].main;
+        done();
+      })
+      .catch(err => console.log(err));
   }
 }
+
+
+router.hooks({
+  before: (done, params) => {
+    // Because not all routes pass params we have to guard against is being undefined
+    const page = params && params.hasOwnProperty("page") ? capitalize(params.page) : "Home";
+
+    fetchDataByView(done, state[page]);
+  }
+});
+
+router
+  .on({
+    "/": () => {
+      render(state.Home);
+    },
+    ":page": params => {
+      render(state[capitalize(params.page)]);
+    }
+  })
+  .resolve();

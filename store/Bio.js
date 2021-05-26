@@ -1,4 +1,6 @@
 export default {
-  header: "All About Me",
-  view: "Bio"
+  header: "About Me",
+  view: "Bio",
+  paragraph:
+    "This is an additional paragraph that is population the parameter in the Bio View.",
 };
