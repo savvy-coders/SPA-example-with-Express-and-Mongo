@@ -3,6 +3,9 @@ import * as state from "./store";
 import axios from "axios";
 import Navigo from "navigo";
 import capitalize from "lodash";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 let API_URL;
 
