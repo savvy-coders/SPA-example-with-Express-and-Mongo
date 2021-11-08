@@ -21,12 +21,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "nodemon": "^2.0.6",
     "parcel-bundler": "^1.12.5",
-    "prettier": "1.19.1",
-    "stylelint": "^11.1.1",
-    "stylelint-config-prettier": "^6.0.0",
-    "stylelint-config-recommended": "^3.0.0",
-    "stylelint-prettier": "^1.1.2",
-    "stylelint-vscode": "^7.0.0-6"
+    "prettier": "1.19.1"
   },
   "dependencies": {
     "axios": "^0.21.1",
