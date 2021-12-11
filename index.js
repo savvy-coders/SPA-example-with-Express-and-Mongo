@@ -141,7 +141,7 @@ function fetchDataByView(done, st = state.Home) {
 router.hooks({
   before: (done, params) => {
     // Because not all routes pass params we have to guard against is being undefined
-    const page = params && params.hasOwnProperty("page") ? capitalize(params.page) : "Home";
+    const page = params && params.data && params.data.hasOwnProperty("view") ? capitalize(params.data.page) : "Home";
 
     fetchDataByView(done, state[page]);
   }
@@ -150,10 +150,11 @@ router.hooks({
 router
   .on({
     "/": () => {
-      render(state.Home);
+      render(merge(state.Global, state.Home));
     },
-    ":page": params => {
-      render(state[capitalize(params.page)]);
+    ":view": params => {
+      let view = capitalize(params.data.view);
+      render(merge(state.Global, state[view]));
     }
   })
   .resolve();
