@@ -15,7 +15,7 @@ if (process.env.API_URL) {
   console.error("Please create the .env file with a value for API_URL");
 }
 
-const router = new Navigo(window.location.origin);
+const router = new Navigo("/");
 
 function render(st = state.Home) {
   document.querySelector("#root").innerHTML = `
@@ -141,7 +141,7 @@ function fetchDataByView(done, st = state.Home) {
 router.hooks({
   before: (done, params) => {
     // Because not all routes pass params we have to guard against is being undefined
-    const page = params && params.hasOwnProperty("page") ? capitalize(params.page) : "Home";
+    const page = params && params.data && params.data.hasOwnProperty("view") ? capitalize(params.data.page) : "Home";
 
     fetchDataByView(done, state[page]);
   }
@@ -152,8 +152,9 @@ router
     "/": () => {
       render(state.Home);
     },
-    ":page": params => {
-      render(state[capitalize(params.page)]);
+    ":view": params => {
+      let view = capitalize(params.data.view);
+      render(state[view]);
     }
   })
   .resolve();
