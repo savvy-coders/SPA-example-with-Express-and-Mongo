@@ -15,7 +15,7 @@ if (process.env.API_URL) {
   console.error("Please create the .env file with a value for API_URL");
 }
 
-const router = new Navigo(window.location.origin);
+const router = new Navigo("/");
 
 function render(st = state.Home) {
   document.querySelector("#root").innerHTML = `
@@ -150,11 +150,11 @@ router.hooks({
 router
   .on({
     "/": () => {
-      render(merge(state.Global, state.Home));
+      render(state.Home);
     },
     ":view": params => {
       let view = capitalize(params.data.view);
-      render(merge(state.Global, state[view]));
+      render(state[view]);
     }
   })
   .resolve();
