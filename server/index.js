@@ -34,10 +34,10 @@ app.use(bodyParser.json());
 app.use(cors);
 app.use(logging);
 
-const DB_CONNECT = process.env.DB_CONNECT || "mongodb://localhost/pizza";
+const MONGODB = process.env.MONGODB || "mongodb://localhost/pizza";
 
 // Database stuff
-mongoose.connect(DB_CONNECT);
+mongoose.connect(MONGODB);
 const db = mongoose.connection;
 
 let db_status = "MongoDB connection not successful.";
@@ -76,5 +76,5 @@ app
 app.use("/pizzas", pizzas);
 app.use("/orders", orders);
 
-const PORT = process.env.DB_PORT || 4040;
+const PORT = process.env.PORT || 4040;
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));

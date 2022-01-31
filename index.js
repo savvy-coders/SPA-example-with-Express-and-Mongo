@@ -97,6 +97,7 @@ function addEventListenersByView(st) {
 }
 
 function fetchDataByView(done, st = state.Home) {
+  console.log('matsinet-st.view:', st.view);
   switch (st.view) {
     case "Pizza":
       axios
@@ -120,7 +121,7 @@ function fetchDataByView(done, st = state.Home) {
         });
       });
       break;
-    default:
+    case "Home":
       axios
       .get(
         `https://api.openweathermap.org/data/2.5/weather?appid=fbb30b5d6cf8e164ed522e5082b49064&q=st.%20louis`
@@ -134,6 +135,9 @@ function fetchDataByView(done, st = state.Home) {
         done();
       })
       .catch(err => console.log(err));
+      break;
+    default:
+      done();
   }
 }
 
@@ -141,7 +145,8 @@ function fetchDataByView(done, st = state.Home) {
 router.hooks({
   before: (done, params) => {
     // Because not all routes pass params we have to guard against is being undefined
-    const page = params && params.data && params.data.hasOwnProperty("view") ? capitalize(params.data.page) : "Home";
+    const page = params && params.data && params.data.hasOwnProperty("view") ? capitalize(params.data.view) : "Home";
+    console.log('matsinet-state[page]:', state[page]);
 
     fetchDataByView(done, state[page]);
   }
