@@ -1,5 +1,5 @@
 import { Header, Nav, Main, Footer } from "./components";
-import * as state from "./store";
+import * as store from "./store";
 import axios from "axios";
 import Navigo from "navigo";
 import capitalize from "lodash";
@@ -17,26 +17,26 @@ if (process.env.API_URL) {
 
 const router = new Navigo("/");
 
-function render(st = state.Home) {
+function render(state = store.Home) {
   document.querySelector("#root").innerHTML = `
-    ${Header(st)}
-    ${Nav(state.Links)}
-    ${Main(st)}
+    ${Header(state)}
+    ${Nav(store.Links)}
+    ${Main(state)}
     ${Footer()}
   `;
 
   router.updatePageLinks();
 
-  addEventListenersByView(st);
+  addEventListenersByView(state);
 }
 
-function addEventListenersByView(st) {
+function addEventListenersByView(state) {
   // Add to every view
   // add event listeners to Nav items for navigation
   document.querySelectorAll("nav a").forEach(navLink =>
     navLink.addEventListener("click", event => {
       event.preventDefault();
-      render(state[event.target.title]);
+      render(store[event.target.title]);
     })
   );
   // add menu toggle to bars icon in nav bar
@@ -47,7 +47,7 @@ function addEventListenersByView(st) {
     );
 
   // Add event listeners for the Form view
-  if (st.view === "Form") {
+  if (state.view === "Form") {
     document.querySelector("form").addEventListener("submit", event => {
       event.preventDefault();
       // convert HTML elements to Array
@@ -60,11 +60,11 @@ function addEventListenersByView(st) {
         return pictureObject;
       }, {});
       // add new picture to state.Gallery.pictures
-      state.Gallery.pictures.push(newPic);
-      render(state.Gallery);
+      store.Gallery.pictures.push(newPic);
+      render(store.Gallery);
     });
   }
-  if (st.view === "Order") {
+  if (state.view === "Order") {
     document.querySelector("form").addEventListener("submit", event => {
       event.preventDefault();
       const inputList = event.target.elements;
@@ -86,7 +86,7 @@ function addEventListenersByView(st) {
       axios
         .post(`${API_URL}/pizzas`, requestData)
         .then(response => {
-          state.Pizza.pizzas.push(response.data);
+          store.Pizza.pizzas.push(response.data);
           router.navigate("/Pizza");
         })
         .catch(error => {
@@ -96,13 +96,13 @@ function addEventListenersByView(st) {
   }
 }
 
-function fetchDataByView(done, st = state.Home) {
-  switch (st.view) {
+function fetchDataByView(done, state = store.Home) {
+  switch (store.view) {
     case "Pizza":
       axios
         .get(`${API_URL}/pizzas`)
         .then(response => {
-          state[st.view].pizzas = response.data;
+          store[state.view].pizzas = response.data;
           render(st);
           done();
         })
@@ -112,28 +112,31 @@ function fetchDataByView(done, st = state.Home) {
         });
       break;
     case "Blog":
-      state.Blog.posts = [];
+      store.Blog.posts = [];
       axios.get("https://jsonplaceholder.typicode.com/posts").then(response => {
         response.data.forEach(post => {
-          state.Blog.posts.push(post);
+          store.Blog.posts.push(post);
           done();
         });
       });
       break;
-    default:
+    case "Home":
       axios
       .get(
         `https://api.openweathermap.org/data/2.5/weather?appid=fbb30b5d6cf8e164ed522e5082b49064&q=st.%20louis`
       )
       .then(response => {
-        state.Home.weather = {};
-        state.Home.weather.city = response.data.name;
-        state.Home.weather.temp = response.data.main.temp;
-        state.Home.weather.feelsLike = response.data.main.feels_like;
-        state.Home.weather.description = response.data.weather[0].main;
+        store.Home.weather = {};
+        store.Home.weather.city = response.data.name;
+        store.Home.weather.temp = response.data.main.temp;
+        store.Home.weather.feelsLike = response.data.main.feels_like;
+        store.Home.weather.description = response.data.weather[0].main;
         done();
       })
       .catch(err => console.log(err));
+      break;
+    default:
+      done();
   }
 }
 
@@ -141,20 +144,20 @@ function fetchDataByView(done, st = state.Home) {
 router.hooks({
   before: (done, params) => {
     // Because not all routes pass params we have to guard against is being undefined
-    const page = params && params.data && params.data.hasOwnProperty("view") ? capitalize(params.data.page) : "Home";
+    const page = params && params.data && params.data.hasOwnProperty("view") ? capitalize(params.data.view) : "Home";
 
-    fetchDataByView(done, state[page]);
+    fetchDataByView(done, store[page]);
   }
 });
 
 router
   .on({
     "/": () => {
-      render(state.Home);
+      render();
     },
     ":view": params => {
       let view = capitalize(params.data.view);
-      render(state[view]);
+      render(store[view]);
     }
   })
   .resolve();

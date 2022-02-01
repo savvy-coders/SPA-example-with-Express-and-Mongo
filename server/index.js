@@ -34,10 +34,10 @@ app.use(bodyParser.json());
 app.use(cors);
 app.use(logging);
 
-const DB_CONNECT = process.env.DB_CONNECT || "mongodb://localhost/pizza";
+const MONGODB = process.env.MONGODB || "mongodb://localhost/pizza";
 
 // Database stuff
-mongoose.connect(DB_CONNECT);
+mongoose.connect(MONGODB);
 const db = mongoose.connection;
 
 let db_status = "MongoDB connection not successful.";
