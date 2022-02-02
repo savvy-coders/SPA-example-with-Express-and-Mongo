@@ -46,24 +46,7 @@ function addEventListenersByView(state) {
       document.querySelector("nav > ul").classList.toggle("hidden--mobile")
     );
 
-  // Add event listeners for the Form view
-  if (state.view === "Form") {
-    document.querySelector("form").addEventListener("submit", event => {
-      event.preventDefault();
-      // convert HTML elements to Array
-      let inputList = Array.from(event.target.elements);
-      // remove submit button from list
-      inputList.pop();
-      // construct new picture object
-      let newPic = inputList.reduce((pictureObject, input) => {
-        pictureObject[input.name] = input.value;
-        return pictureObject;
-      }, {});
-      // add new picture to state.Gallery.pictures
-      store.Gallery.pictures.push(newPic);
-      render(store.Gallery);
-    });
-  }
+  
   if (state.view === "Order") {
     document.querySelector("form").addEventListener("submit", event => {
       event.preventDefault();
@@ -110,15 +93,6 @@ function fetchDataByView(done, state = store.Home) {
           console.log("It puked", error);
           done();
         });
-      break;
-    case "Blog":
-      store.Blog.posts = [];
-      axios.get("https://jsonplaceholder.typicode.com/posts").then(response => {
-        response.data.forEach(post => {
-          store.Blog.posts.push(post);
-          done();
-        });
-      });
       break;
     case "Home":
       axios
