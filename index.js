@@ -7,12 +7,12 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-let API_URL;
+let PIZZA_PLACE_API_URL;
 
-if (process.env.API_URL) {
-  API_URL = process.env.API_URL || "http://localhost:4040";
+if (process.env.PIZZA_PLACE_API_URL) {
+  PIZZA_PLACE_API_URL = process.env.PIZZA_PLACE_API_URL || "http://localhost:4040";
 } else {
-  console.error("Please create the .env file with a value for API_URL");
+  console.error("Please create the .env file with a value for PIZZA_PLACE_API_URL");
 }
 
 const router = new Navigo("/");
@@ -58,7 +58,6 @@ function addEventListenersByView(state) {
           toppings.push(input.value);
         }
       }
-
       const requestData = {
         crust: inputList.crust.value,
         cheese: inputList.cheese.value,
@@ -67,8 +66,9 @@ function addEventListenersByView(state) {
       };
 
       axios
-        .post(`${API_URL}/pizzas`, requestData)
+        .post(`${PIZZA_PLACE_API_URL}`, requestData)
         .then(response => {
+          console.log(response.data);
           store.Pizza.pizzas.push(response.data);
           router.navigate("/Pizza");
         })
@@ -79,14 +79,15 @@ function addEventListenersByView(state) {
   }
 }
 
-function fetchDataByView(done, state = store.Home) {
+/*function fetchDataByView(done, state = store.Home) {
   switch (store.view) {
     case "Pizza":
       axios
-        .get(`${API_URL}/pizzas`)
+        .get(`${PIZZA_PLACE_API_URL}/pizzas`)
         .then(response => {
           store[state.view].pizzas = response.data;
-          render(st);
+          console.log(response.data);
+          render(state);
           done();
         })
         .catch(error => {
@@ -97,11 +98,12 @@ function fetchDataByView(done, state = store.Home) {
     case "Home":
       axios
       .get(
-        `https://api.openweathermap.org/data/2.5/weather?appid=fbb30b5d6cf8e164ed522e5082b49064&q=st.%20louis`
+        `https://api.openweathermap.org/data/2.5/weather?appid=${OPEN_WEATHER_MAP_API_KEY}&q=st.%20louis`
       )
       .then(response => {
         store.Home.weather = {};
         store.Home.weather.city = response.data.name;
+        console.log(store.Home.weather.city);
         store.Home.weather.temp = response.data.main.temp;
         store.Home.weather.feelsLike = response.data.main.feels_like;
         store.Home.weather.description = response.data.weather[0].main;
@@ -112,17 +114,38 @@ function fetchDataByView(done, state = store.Home) {
     default:
       done();
   }
-}
+}*/
 
 
 router.hooks({
   before: (done, params) => {
-    // Because not all routes pass params we have to guard against is being undefined
-    const page = params && params.data && params.data.hasOwnProperty("view") ? capitalize(params.data.view) : "Home";
-
-    fetchDataByView(done, store[page]);
+    const page = params && params.hasOwnProperty("page") ? capitalize(params.page) : "Home";
+    if (page === "Home") {
+      axios
+        .get(`https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}&q=st.%20louis`)
+        .then(response => {
+          store.Home.weather = {};
+          store.Home.weather.city = response.data.name;
+          store.Home.weather.temp = response.data.main.temp;
+          store.Home.weather.feelsLike = response.data.main.feels_like;
+          store.Home.weather.description = response.data.weather[0].main;
+          done();
+        })
+        .catch(err => console.log(err));
+    }
+    if (page === "Pizza") {
+      axios
+        .get(`${process.env.PIZZA_PLACE_API_URL}`)
+        .then(response => {
+          store.Pizza.pizzas = response.data;
+          done();
+        })
+        .catch(error => {
+          console.log("It puked", error);
+        });
+    }
   }
-});
+})
 
 router
   .on({
