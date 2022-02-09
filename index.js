@@ -2,7 +2,7 @@ import { Header, Nav, Main, Footer } from "./components";
 import * as store from "./store";
 import axios from "axios";
 import Navigo from "navigo";
-import capitalize from "lodash";
+import { capitalize } from "lodash";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -79,53 +79,20 @@ function addEventListenersByView(state) {
   }
 }
 
-/*function fetchDataByView(done, state = store.Home) {
-  switch (store.view) {
-    case "Pizza":
-      axios
-        .get(`${PIZZA_PLACE_API_URL}/pizzas`)
-        .then(response => {
-          store[state.view].pizzas = response.data;
-          console.log(response.data);
-          render(state);
-          done();
-        })
-        .catch(error => {
-          console.log("It puked", error);
-          done();
-        });
-      break;
-    case "Home":
-      axios
-      .get(
-        `https://api.openweathermap.org/data/2.5/weather?appid=${OPEN_WEATHER_MAP_API_KEY}&q=st.%20louis`
-      )
-      .then(response => {
-        store.Home.weather = {};
-        store.Home.weather.city = response.data.name;
-        console.log(store.Home.weather.city);
-        store.Home.weather.temp = response.data.main.temp;
-        store.Home.weather.feelsLike = response.data.main.feels_like;
-        store.Home.weather.description = response.data.weather[0].main;
-        done();
-      })
-      .catch(err => console.log(err));
-      break;
-    default:
-      done();
-  }
-}*/
-
 
 router.hooks({
   before: (done, params) => {
-    const page = params && params.hasOwnProperty("page") ? capitalize(params.page) : "Home";
+    let page = "Home";
+    if (params.data.view != null) {
+      page = capitalize(params.data.view);
+    }
     if (page === "Home") {
       axios
         .get(`https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}&q=st.%20louis`)
         .then(response => {
           store.Home.weather = {};
           store.Home.weather.city = response.data.name;
+          console.log(response.data.name);
           store.Home.weather.temp = response.data.main.temp;
           store.Home.weather.feelsLike = response.data.main.feels_like;
           store.Home.weather.description = response.data.weather[0].main;
@@ -144,6 +111,7 @@ router.hooks({
           console.log("It puked", error);
         });
     }
+    done();
   }
 })
 
