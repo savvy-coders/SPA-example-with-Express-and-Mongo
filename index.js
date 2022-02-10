@@ -65,6 +65,7 @@ function addEventListeners(state) {
         toppings: toppings,
         customer: "~Update with YOUR name~"
       };
+      console.log('matsinet-requestData:', requestData);
 
       axios
         .post(`${PIZZA_PLACE_API_URL}`, requestData)
@@ -87,9 +88,9 @@ router.hooks({
     if (params && params.data && params.data.view) {
       page = capitalize(params.data.view);
     }
-    switch (page) {
-      case "Home":
-        axios
+
+    if (page === "Home") {
+      axios
         .get(`https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}&q=st.%20louis`)
         .then(response => {
           store.Home.weather = {};
@@ -103,21 +104,19 @@ router.hooks({
           console.log(err);
           done();
         });
-        break;
-      case "Pizza":
-        axios
-          .get(`${process.env.PIZZA_PLACE_API_URL}`)
-          .then(response => {
-            store.Pizza.pizzas = response.data;
-            done();
-          })
-          .catch(error => {
-            console.log("It puked", error);
-            done();
-          });
-          break;
-        default:
+    } else if (page === "Pizza") {
+      axios
+        .get(`${process.env.PIZZA_PLACE_API_URL}`)
+        .then(response => {
+          store.Pizza.pizzas = response.data;
           done();
+        })
+        .catch(error => {
+          console.log("It puked", error);
+          done();
+        });
+    } else {
+      done();
     }
   }
 });
