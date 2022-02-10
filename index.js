@@ -62,7 +62,8 @@ function addEventListenersByView(state) {
         crust: inputList.crust.value,
         cheese: inputList.cheese.value,
         sauce: inputList.sauce.value,
-        toppings: toppings
+        toppings: toppings,
+        customer: "~Update with YOUR name~"
       };
 
       axios
@@ -83,24 +84,26 @@ function addEventListenersByView(state) {
 router.hooks({
   before: (done, params) => {
     let page = "Home";
-    if (params.data.view != null) {
+    if (params && params.data && params.data.view) {
       page = capitalize(params.data.view);
     }
+
     if (page === "Home") {
       axios
         .get(`https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}&q=st.%20louis`)
         .then(response => {
           store.Home.weather = {};
           store.Home.weather.city = response.data.name;
-          console.log(response.data.name);
           store.Home.weather.temp = response.data.main.temp;
           store.Home.weather.feelsLike = response.data.main.feels_like;
           store.Home.weather.description = response.data.weather[0].main;
           done();
         })
-        .catch(err => console.log(err));
-    }
-    if (page === "Pizza") {
+        .catch(err => {
+          console.log(err);
+          done();
+        });
+    } else if (page === "Pizza") {
       axios
         .get(`${process.env.PIZZA_PLACE_API_URL}`)
         .then(response => {
@@ -109,11 +112,13 @@ router.hooks({
         })
         .catch(error => {
           console.log("It puked", error);
+          done();
         });
+    } else {
+      done();
     }
-    done();
   }
-})
+});
 
 router
   .on({
