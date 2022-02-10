@@ -27,10 +27,10 @@ function render(state = store.Home) {
 
   router.updatePageLinks();
 
-  addEventListenersByView(state);
+  addEventListeners(state);
 }
 
-function addEventListenersByView(state) {
+function addEventListeners(state) {
   // Add to every view
   // add event listeners to Nav items for navigation
   document.querySelectorAll("nav a").forEach(navLink =>
@@ -62,7 +62,8 @@ function addEventListenersByView(state) {
         crust: inputList.crust.value,
         cheese: inputList.cheese.value,
         sauce: inputList.sauce.value,
-        toppings: toppings
+        toppings: toppings,
+        customer: "~Update with YOUR name~"
       };
 
       axios
@@ -83,37 +84,43 @@ function addEventListenersByView(state) {
 router.hooks({
   before: (done, params) => {
     let page = "Home";
-    if (params.data.view != null) {
+    if (params && params.data && params.data.view) {
       page = capitalize(params.data.view);
     }
-    if (page === "Home") {
-      axios
+    switch (page) {
+      case "Home":
+        axios
         .get(`https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}&q=st.%20louis`)
         .then(response => {
           store.Home.weather = {};
           store.Home.weather.city = response.data.name;
-          console.log(response.data.name);
           store.Home.weather.temp = response.data.main.temp;
           store.Home.weather.feelsLike = response.data.main.feels_like;
           store.Home.weather.description = response.data.weather[0].main;
           done();
         })
-        .catch(err => console.log(err));
-    }
-    if (page === "Pizza") {
-      axios
-        .get(`${process.env.PIZZA_PLACE_API_URL}`)
-        .then(response => {
-          store.Pizza.pizzas = response.data;
+        .catch(err => {
+          console.log(err);
           done();
-        })
-        .catch(error => {
-          console.log("It puked", error);
         });
+        break;
+      case "Pizza":
+        axios
+          .get(`${process.env.PIZZA_PLACE_API_URL}`)
+          .then(response => {
+            store.Pizza.pizzas = response.data;
+            done();
+          })
+          .catch(error => {
+            console.log("It puked", error);
+            done();
+          });
+          break;
+        default:
+          done();
     }
-    done();
   }
-})
+});
 
 router
   .on({
