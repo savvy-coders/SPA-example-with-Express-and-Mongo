@@ -1,11 +1,11 @@
 import html from "html-literal";
-import dogPic from "../../assets/img/photo-1510771463146-e89e6e86560e.jfif";
+import dogPic from "../../assets/img/photo-1510771463146-e89e6e86560e.jpg";
 
-export default st => html`
+export default state => html`
   <section id="bio">
     <h2>Vivamus ac justo eu nisi</h2>
     <img src="${dogPic}" alt="me" />
-    <p>${st.paragraph} ADDITIONAL SOMETHING ELSE</p>
+    <p>${state.paragraph} ADDITIONAL SOMETHING ELSE</p>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu sagittis
       nulla. Etiam semper mauris a quam tempus, non feugiat massa posuere. Morbi

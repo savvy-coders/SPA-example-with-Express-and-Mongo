@@ -1,4 +1,4 @@
 import * as views from "./views";
 
-export default st => `
-<div id="main">${views[st.view](st)}</div>`;
+export default state => `
+<div id="main">${views[state.view](state)}</div>`;
