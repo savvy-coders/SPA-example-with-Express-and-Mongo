@@ -27,10 +27,10 @@ function render(state = store.Home) {
 
   router.updatePageLinks();
 
-  addEventListenersByView(state);
+  afterRender(state);
 }
 
-function addEventListenersByView(state) {
+function afterRender(state) {
   // Add to every view
   // add event listeners to Nav items for navigation
   document.querySelectorAll("nav a").forEach(navLink =>
