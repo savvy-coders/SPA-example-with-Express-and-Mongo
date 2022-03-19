@@ -83,12 +83,12 @@ function afterRender(state) {
 
 router.hooks({
   before: (done, params) => {
-    let page = "Home";
+    let view = "Home";
     if (params && params.data && params.data.view) {
-      page = capitalize(params.data.view);
+      view = capitalize(params.data.view);
     }
 
-    if (page === "Home") {
+    if (view === "Home") {
       axios
         .get(`https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}&q=st.%20louis`)
         .then(response => {
@@ -103,7 +103,7 @@ router.hooks({
           console.log(err);
           done();
         });
-    } else if (page === "Pizza") {
+    } else if (view === "Pizza") {
       axios
         .get(`${process.env.PIZZA_PLACE_API_URL}`)
         .then(response => {
