@@ -7,7 +7,4 @@ const deliverySchema = new mongoose.Schema({
 
 const Delivery = mongoose.model("Delivery", deliverySchema);
 
-module.exports = {
-  model: Delivery,
-  schema: deliverySchema
-};
+module.exports = Delivery;

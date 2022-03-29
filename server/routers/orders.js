@@ -12,7 +12,7 @@ router.post("/", (request, response) => {
   const customer = new Customer.model(body.customer);
   customer.save();
 
-  const newOrder = new Order.model({});
+  const newOrder = new Order({});
 
   const pizzaIds = body.pizzas.map(pizza => {
     const newPizza = new Pizza.model({ ...pizza, order: newOrder._id });
@@ -36,11 +36,11 @@ router.get("/:id", (request, response) => {
   const params = request.params;
   const query = request.query;
   if (query.hasOwnProperty("raw") && query.raw === "true") {
-    Order.model.findById(params.id, (error, data) => {
+    Order.findById(params.id, (error, data) => {
       return error ? response.sendStatus(500).json(error) : response.json(data);
     });
   } else {
-    Order.model
+    Order
       .findById(params.id)
       .populate("customer")
       .populate("pizzas")
@@ -56,11 +56,11 @@ router.get("/:id", (request, response) => {
 router.get("/", (request, response) => {
   const query = request.query;
   if (query.hasOwnProperty("raw") && query.raw === "true") {
-    Order.model.find({}, (error, data) => {
+    Order.find({}, (error, data) => {
       return error ? response.sendStatus(500).json(error) : response.json(data);
     });
   } else {
-    Order.model
+    Order
       .find({})
       .populate("customer")
       .populate("pizzas")
@@ -75,7 +75,7 @@ router.get("/", (request, response) => {
 // Update a single orders pizza, delivery and notes subdocuments
 router.put("/:id", (request, response) => {
   const data = request.body;
-  Order.model.findByIdAndUpdate(
+  Order.findByIdAndUpdate(
     request.params.id,
     {
       $set: {
@@ -110,7 +110,7 @@ router.put("/:id", (request, response) => {
 
 // Remove a single order and it's subdocuments
 router.delete("/:id", (request, response) => {
-  Order.model.findByIdAndDelete(request.params.id, {}, (error, data) => {
+  Order.findByIdAndDelete(request.params.id, {}, (error, data) => {
     if (error) response.sendStatus(500).json(error);
 
     Pizza.model

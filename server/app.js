@@ -2,8 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const pizzas = require("./controllers/pizzas");
-const orders = require("./controllers/orders");
+const pizzas = require("./routers/pizzas");
+const orders = require("./routers/orders");
 
 dotenv.config();
 

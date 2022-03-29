@@ -6,7 +6,7 @@
     "parcel-build": "parcel build index.html && cp _redirects ./dist/",
     "serve": "parcel index.html",
     "spa:watch": "parcel index.html",
-    "server:watch": "nodemon --watch ./server -e js ./server/index.js"
+    "server:watch": "nodemon --watch ./server -e js ./server/app.js"
   },
   "keywords": [],
   "author": "",
