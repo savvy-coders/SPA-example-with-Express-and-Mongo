@@ -80,7 +80,6 @@ function afterRender(state) {
   }
 }
 
-
 router.hooks({
   before: (done, params) => {
     let view = "Home";

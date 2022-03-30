@@ -76,5 +76,5 @@ app
 app.use("/pizzas", pizzas);
 app.use("/orders", orders);
 
-const PORT = process.env.DB_PORT || 4040;
+const PORT = process.env.PORT || 4040;
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
