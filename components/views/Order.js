@@ -1,4 +1,6 @@
-export default () => `
+import html from "html-literal";
+
+export default () => html`
 <form id="order" method="POST" action="">
   <h2> Order a pizza</h2>
   <div>
