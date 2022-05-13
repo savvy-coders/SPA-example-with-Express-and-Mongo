@@ -10,9 +10,12 @@ dotenv.config();
 let PIZZA_PLACE_API_URL;
 
 if (process.env.PIZZA_PLACE_API_URL) {
-  PIZZA_PLACE_API_URL = process.env.PIZZA_PLACE_API_URL || "http://localhost:4040";
+  PIZZA_PLACE_API_URL =
+    process.env.PIZZA_PLACE_API_URL || "http://localhost:4040";
 } else {
-  console.error("Please create the .env file with a value for PIZZA_PLACE_API_URL");
+  console.error(
+    "Please create the .env file with a value for PIZZA_PLACE_API_URL"
+  );
 }
 
 const router = new Navigo("/");
@@ -33,12 +36,13 @@ function render(state = store.Home) {
 function afterRender(state) {
   // Add to every view
   // add event listeners to Nav items for navigation
-  document.querySelectorAll("nav a").forEach(navLink =>
-    navLink.addEventListener("click", event => {
-      event.preventDefault();
-      render(store[event.target.title]);
-    })
-  );
+  // document.querySelectorAll("nav a").forEach(navLink =>
+  //   navLink.addEventListener("click", event => {
+  //     event.preventDefault();
+  //     render(store[event.target.title]);
+  //   })
+  // );
+
   // add menu toggle to bars icon in nav bar
   document
     .querySelector(".fa-bars")
@@ -46,9 +50,8 @@ function afterRender(state) {
       document.querySelector("nav > ul").classList.toggle("hidden--mobile")
     );
 
-  
   if (state.view === "Order") {
-    document.querySelector("form").addEventListener("submit", event => {
+    document.querySelector("form").addEventListener("submit", (event) => {
       event.preventDefault();
       const inputList = event.target.elements;
 
@@ -63,17 +66,17 @@ function afterRender(state) {
         cheese: inputList.cheese.value,
         sauce: inputList.sauce.value,
         toppings: toppings,
-        customer: "~Update with YOUR name~"
+        customer: "~Update with YOUR name~",
       };
 
       axios
         .post(`${PIZZA_PLACE_API_URL}`, requestData)
-        .then(response => {
+        .then((response) => {
           console.log(response.data);
           store.Pizza.pizzas.push(response.data);
           router.navigate("/Pizza");
         })
-        .catch(error => {
+        .catch((error) => {
           console.log("It puked", error);
         });
     });
@@ -89,34 +92,41 @@ router.hooks({
 
     if (view === "Home") {
       axios
-        .get(`https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}&q=st.%20louis`)
-        .then(response => {
+        .get(
+          `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}&q=st.%20louis`
+        )
+        .then((response) => {
+          const kelvinToFahrenheit = (kelvinTemp) =>
+            Math.round((kelvinTemp - 273.15) * (9 / 5) + 32);
+
           store.Home.weather = {};
           store.Home.weather.city = response.data.name;
-          store.Home.weather.temp = response.data.main.temp;
-          store.Home.weather.feelsLike = response.data.main.feels_like;
+          store.Home.weather.temp = kelvinToFahrenheit(response.data.main.temp);
+          store.Home.weather.feelsLike = kelvinToFahrenheit(
+            response.data.main.feels_like
+          );
           store.Home.weather.description = response.data.weather[0].main;
           done();
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           done();
         });
     } else if (view === "Pizza") {
       axios
         .get(`${process.env.PIZZA_PLACE_API_URL}`)
-        .then(response => {
+        .then((response) => {
           store.Pizza.pizzas = response.data;
           done();
         })
-        .catch(error => {
+        .catch((error) => {
           console.log("It puked", error);
           done();
         });
     } else {
       done();
     }
-  }
+  },
 });
 
 router
@@ -124,9 +134,9 @@ router
     "/": () => {
       render();
     },
-    ":view": params => {
+    ":view": (params) => {
       let view = capitalize(params.data.view);
       render(store[view]);
-    }
+    },
   })
   .resolve();

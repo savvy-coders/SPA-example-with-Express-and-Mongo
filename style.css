@@ -1,5 +1,15 @@
+body {
+  width: 100%;
+}
+
+header > h1 {
+  margin: 5px;
+  color: blueviolet;
+}
+
 #jumbotron {
-  background: url(assets/img/photo-1528334713982-2d1fe11a157a.jpg) center center no-repeat;  background-size: cover;
+  background: url(assets/img/photo-1528334713982-2d1fe11a157a.jpg) center center no-repeat;
+  background-size: cover;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -20,6 +30,64 @@
   border-radius: 10px;
 }
 
+#jumbotron > a:hover {
+  font-weight: 700;
+}
+
+
+/* === BIO === */
+
+#bio {
+  margin: 1rem;
+}
+
+#bio > h2 {
+  color: rosybrown;
+  font-size: xx-large;
+  border: 1px solid red;
+}
+
+#bioFluff > p {
+  margin: 1rem;
+  font-size: 1.3rem;
+}
+
+
+/* === PIZZAS === */
+
+#pizzas {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.2em;
+  height: auto;
+  width: 92.5%;
+  margin: 20px auto;
+  border: 1px solid black;
+  padding: 10px;
+}
+
+#pizzaTable{
+  min-height: 100px;
+  border: 1px solid black;
+}
+
+#pizzas tbody {
+  width: 100%;
+}
+
+#pizzas th {
+  text-align: left;
+}
+
+#pizzas td,th {
+  width: 25%;
+}
+
+/* === Order Form === */
+
+#order > h2 {
+  color: green;
+}
+
 form {
   border: solid 1px black;
   display: flex;
@@ -37,20 +105,20 @@ form > input[type="submit"] {
   margin-right: auto;
 }
 
+/* === FOOTER === */
+
 footer {
   border-top: solid 1px black;
   padding: 2rem 2rem 4rem;
   margin: 1rem 1rem;
 }
 
-#bio {
-  margin: 1rem;
-}
-
 #gallery {
   border: solid 1px black;
   clear: both;
 }
+
+/* === GALLERY === */
 
 #gallery > * {
   padding: 0.5rem;
@@ -61,26 +129,6 @@ footer {
   height: auto;
   width: 92.5%;
   margin: auto;
-}
-
-#pizzas {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1.2em;
-  height: auto;
-  width: 92.5%;
-  margin: auto;
-}
-
-#pizzas tbody {
-  width: 100%;
-}
-
-#pizzas th {
-  text-align: left;
-}
-
-#pizzas td,th {
-  width: 25%;
 }
 
 @media (max-width: 549px){
@@ -118,6 +166,10 @@ footer {
     margin-right: 1rem;
   }
 
+  #pizzaTable{
+    margin: 15px;
+  }
+
   #gallery {
     display: flex;
     flex-direction: column;
@@ -140,6 +192,14 @@ footer {
     border-radius: 25px;
   }
 
+  nav > ul > li:hover {
+    border:  1px blue solid;
+  }
+
+  nav > ul > li :hover {
+    color: red;
+  }
+
   nav > .fa-bars {
     display: none;
   }
@@ -155,9 +215,39 @@ footer {
     margin-right: 1rem;
   }
 
+  #pizzaTable{
+    margin: 15px;
+  }
+  
   #gallery {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(33%, 1fr));
     background-color: white;
   }
+}
+
+/* === Home Button === */
+
+#homeButton {
+  text-align: center;
+  background-color: beige;
+  font-size: 1em;
+  padding: 0.3rem;
+  margin:  0.3em;
+  border:  2px red solid;
+  border-radius: 15px;
+  max-width: 80px;
+  width: auto;
+  position: fixed;
+  bottom: 20px;
+  right: 25px;
+}
+
+#homeButton:hover {
+  border:  3px blue solid;
+}
+
+#homeButton > a {
+  text-decoration: none;
+  color: red;
 }
