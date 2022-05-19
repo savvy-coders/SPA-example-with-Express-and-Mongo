@@ -113,23 +113,6 @@ footer {
   margin: 1rem 1rem;
 }
 
-#gallery {
-  border: solid 1px black;
-  clear: both;
-}
-
-/* === GALLERY === */
-
-#gallery > * {
-  padding: 0.5rem;
-}
-
-#gallery img {
-  display: block;
-  height: auto;
-  width: 92.5%;
-  margin: auto;
-}
 
 @media (max-width: 549px){
   .hidden--mobile {
@@ -169,13 +152,8 @@ footer {
   #pizzaTable{
     margin: 15px;
   }
-
-  #gallery {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
 }
+
 
 @media (min-width: 550px) {
   nav > ul {
@@ -218,36 +196,4 @@ footer {
   #pizzaTable{
     margin: 15px;
   }
-  
-  #gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(33%, 1fr));
-    background-color: white;
-  }
-}
-
-/* === Home Button === */
-
-#homeButton {
-  text-align: center;
-  background-color: beige;
-  font-size: 1em;
-  padding: 0.3rem;
-  margin:  0.3em;
-  border:  2px red solid;
-  border-radius: 15px;
-  max-width: 80px;
-  width: auto;
-  position: fixed;
-  bottom: 20px;
-  right: 25px;
-}
-
-#homeButton:hover {
-  border:  3px blue solid;
-}
-
-#homeButton > a {
-  text-decoration: none;
-  color: red;
 }
