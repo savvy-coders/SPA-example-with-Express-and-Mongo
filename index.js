@@ -3,9 +3,6 @@ import * as store from "./store";
 import axios from "axios";
 import Navigo from "navigo";
 import { capitalize } from "lodash";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 let PIZZA_PLACE_API_URL;
 
@@ -78,46 +75,55 @@ function afterRender(state) {
 
 router.hooks({
   before: (done, params) => {
-    let view = "Home";
-    if (params && params.data && params.data.view) {
-      view = capitalize(params.data.view);
-    }
+    const view =
+      params && params.data && params.data.view
+        ? capitalize(params.data.view)
+        : "Home";
 
-    if (view === "Home") {
-      axios
-        .get(
-          `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}&q=st.%20louis`
-        )
-        .then((response) => {
-          const kelvinToFahrenheit = (kelvinTemp) =>
-            Math.round((kelvinTemp - 273.15) * (9 / 5) + 32);
+    // Add a switch case statement to handle multiple routes
+    switch (view) {
+      case "Home": {
+        axios
+          .get(
+            `https://api.openweathermap.org/data/2.5/weather?appid=fbb30b5d6cf8e164ed522e5082b49064&q=st%20louis`
+          )
+          .then((response) => {
+            const kelvinToFahrenheit = (kelvinTemp) =>
+              Math.round((kelvinTemp - 273.15) * (9 / 5) + 32);
 
-          store.Home.weather = {};
-          store.Home.weather.city = response.data.name;
-          store.Home.weather.temp = kelvinToFahrenheit(response.data.main.temp);
-          store.Home.weather.feelsLike = kelvinToFahrenheit(
-            response.data.main.feels_like
-          );
-          store.Home.weather.description = response.data.weather[0].main;
-          done();
-        })
-        .catch((err) => {
-          console.log(err);
-          done();
-        });
-    } else if (view === "Pizza") {
-      axios
-        .get(`${process.env.PIZZA_PLACE_API_URL}`)
-        .then((response) => {
-          store.Pizza.pizzas = response.data;
-          done();
-        })
-        .catch((error) => {
-          console.log("It puked", error);
-          done();
-        });
-    } else {
-      done();
+            store.Home.weather = {};
+            store.Home.weather.city = response.data.name;
+            store.Home.weather.temp = kelvinToFahrenheit(
+              response.data.main.temp
+            );
+            store.Home.weather.feelsLike = kelvinToFahrenheit(
+              response.data.main.feels_like
+            );
+            store.Home.weather.description = response.data.weather[0].main;
+            done();
+          })
+          .catch((err) => {
+            console.log(err);
+            done();
+          });
+        break;
+      }
+      case "Pizza": {
+        axios
+          .get(`${process.env.PIZZA_PLACE_API_URL}`)
+          .then((response) => {
+            store.Pizza.pizzas = response.data;
+            done();
+          })
+          .catch((error) => {
+            console.log("It puked", error);
+            done();
+          });
+        break;
+      }
+      default: {
+        done();
+      }
     }
   },
 });

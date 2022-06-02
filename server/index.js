@@ -30,8 +30,8 @@ const cors = (req, res, next) => {
   next();
 };
 
-app.use(bodyParser.json());
 app.use(cors);
+app.use(bodyParser.json());
 app.use(logging);
 
 const MONGODB = process.env.MONGODB || "mongodb://localhost/pizza";
