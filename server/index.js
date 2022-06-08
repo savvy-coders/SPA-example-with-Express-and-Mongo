@@ -1,5 +1,4 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const pizzas = require("./controllers/pizzas");
@@ -31,7 +30,7 @@ const cors = (req, res, next) => {
 };
 
 app.use(cors);
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(logging);
 
 const MONGODB = process.env.MONGODB || "mongodb://localhost/pizza";

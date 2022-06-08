@@ -5,7 +5,7 @@
   "scripts": {
     "parcel-build": "parcel build index.html && cp _redirects ./dist/",
     "serve": "parcel index.html",
-    "spa:watch": "nodemon --watch ./server -e js ./server/index.js"
+    "app:watch": "nodemon --watch ./server -e js ./server/index.js"
   },
   "keywords": [],
   "author": "",
