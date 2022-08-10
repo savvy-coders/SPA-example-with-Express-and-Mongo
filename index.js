@@ -41,7 +41,7 @@ function afterRender(state) {
     );
 
   if (state.view === "Order") {
-    document.querySelector("form").addEventListener("submit", (event) => {
+    document.querySelector("form").addEventListener("submit", event => {
       event.preventDefault();
       const inputList = event.target.elements;
 
@@ -60,13 +60,13 @@ function afterRender(state) {
       };
 
       axios
-        .post(`${PIZZA_PLACE_API_URL}`, requestData)
-        .then((response) => {
+        .post(`${PIZZA_PLACE_API_URL}/pizzas`, requestData)
+        .then(response => {
           console.log(response.data);
           store.Pizza.pizzas.push(response.data);
           router.navigate("/Pizza");
         })
-        .catch((error) => {
+        .catch(error => {
           console.log("It puked", error);
         });
     });
@@ -75,17 +75,17 @@ function afterRender(state) {
 
 router.hooks({
   before: (done, params) => {
-    const view =
-      params && params.data && params.data.view
-        ? capitalize(params.data.view)
-        : "Home";
+    let view = "Home";
+    if (params && params.data && params.data.view) {
+      view = capitalize(params.data.view);
+    }
 
     // Add a switch case statement to handle multiple routes
     switch (view) {
       case "Home": {
         axios
           .get(
-            `https://api.openweathermap.org/data/2.5/weather?appid=fbb30b5d6cf8e164ed522e5082b49064&q=st%20louis`
+            `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}4&q=st%20louis`
           )
           .then((response) => {
             const kelvinToFahrenheit = (kelvinTemp) =>
@@ -110,7 +110,7 @@ router.hooks({
       }
       case "Pizza": {
         axios
-          .get(`${process.env.PIZZA_PLACE_API_URL}`)
+          .get(`${process.env.PIZZA_PLACE_API_URL}/pizzas`)
           .then((response) => {
             store.Pizza.pizzas = response.data;
             done();
@@ -133,9 +133,9 @@ router
     "/": () => {
       render();
     },
-    ":view": (params) => {
+    ":view": params => {
       let view = capitalize(params.data.view);
       render(store[view]);
-    },
+    }
   })
   .resolve();
