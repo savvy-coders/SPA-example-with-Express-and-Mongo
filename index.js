@@ -56,7 +56,7 @@ function afterRender(state) {
         cheese: inputList.cheese.value,
         sauce: inputList.sauce.value,
         toppings: toppings,
-        customer: "~Update with YOUR name~",
+        customer: inputList.customer.value,
       };
 
       axios
