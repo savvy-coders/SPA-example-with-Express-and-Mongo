@@ -5,8 +5,7 @@
   "scripts": {
     "parcel-build": "parcel build index.html && cp _redirects ./dist/",
     "serve": "parcel index.html",
-    "spa:watch": "parcel index.html",
-    "server:watch": "nodemon --watch ./server -e js ./server/index.js"
+    "app:watch": "nodemon --watch ./server -e js server/app.js"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +18,9 @@
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
     "nodemon": "^2.0.6",
-    "prettier": "1.19.1"
+    "path-browserify": "^1.0.1",
+    "prettier": "1.19.1",
+    "process": "^0.11.10"
   },
   "dependencies": {
     "axios": "^0.21.1",
