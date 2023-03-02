@@ -6,7 +6,7 @@ const Pizza = require("../models/pizza");
 router.post("/", (request, response) => {
   const newPizza = new Pizza.model(request.body);
   newPizza.save((error, pizza) => {
-    if (error?.name === 'ValidationError') return response.status(400).json(error.errors);
+    if (error.name && error.name === 'ValidationError') return response.status(400).json(error.errors);
     if (error) return response.status(500).json(error.errors);
 
     response.json(pizza);
