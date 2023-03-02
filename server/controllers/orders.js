@@ -26,7 +26,7 @@ router.post("/", (request, response) => {
   newOrder.status = body.status;
 
   newOrder.save((error, data) => {
-    if (error.name === 'ValidationError') return response.status(400).json(error.errors);
+    if (error?.name === 'ValidationError') return response.status(400).json(error.errors);
     if (error) return response.status(500).json(error.errors);
 
     response.json(data);
@@ -48,7 +48,7 @@ router.get("/:id", (request, response) => {
       .populate("customer")
       .populate("pizzas")
       .exec((error, data) => {
-        if (error.name === 'ValidationError') return response.status(400).json(error.errors);
+        if (error?.name === 'ValidationError') return response.status(400).json(error.errors);
         if (error) return response.status(500).json(error.errors);
     
         response.json(data);
@@ -69,7 +69,7 @@ router.get("/", (request, response) => {
       .populate("customer")
       .populate("pizzas")
       .exec((error, data) => {
-        if (error.name === 'ValidationError') return response.status(400).json(error.errors);
+        if (error?.name === 'ValidationError') return response.status(400).json(error.errors);
         if (error) return response.status(500).json(error.errors);
 
         response.json(data);
@@ -108,7 +108,7 @@ router.put("/:id", (request, response) => {
         );
       });
 
-      if (error.name === 'ValidationError') return response.status(400).json(error.errors);
+      if (error?.name === 'ValidationError') return response.status(400).json(error.errors);
       if (error) return response.status(500).json(error.errors);
 
       response.json(data);
