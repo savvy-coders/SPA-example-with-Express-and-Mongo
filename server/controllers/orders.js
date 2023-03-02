@@ -26,7 +26,10 @@ router.post("/", (request, response) => {
   newOrder.status = body.status;
 
   newOrder.save((error, data) => {
-    return error ? response.sendStatus(500).json(error) : response.json(data);
+    if (error.name === 'ValidationError') return response.status(400).json(error.errors);
+    if (error) return response.status(500).json(error.errors);
+
+    response.json(data);
   });
 });
 
@@ -45,9 +48,10 @@ router.get("/:id", (request, response) => {
       .populate("customer")
       .populate("pizzas")
       .exec((error, data) => {
-        return error
-          ? response.sendStatus(500).json(error)
-          : response.json(data);
+        if (error.name === 'ValidationError') return response.status(400).json(error.errors);
+        if (error) return response.status(500).json(error.errors);
+    
+        response.json(data);
       });
   }
 });
@@ -65,9 +69,10 @@ router.get("/", (request, response) => {
       .populate("customer")
       .populate("pizzas")
       .exec((error, data) => {
-        return error
-          ? response.sendStatus(500).json(error)
-          : response.json(data);
+        if (error.name === 'ValidationError') return response.status(400).json(error.errors);
+        if (error) return response.status(500).json(error.errors);
+
+        response.json(data);
       });
   }
 });
@@ -103,7 +108,10 @@ router.put("/:id", (request, response) => {
         );
       });
 
-      return error ? response.sendStatus(500).json(error) : res.json(data);
+      if (error.name === 'ValidationError') return response.status(400).json(error.errors);
+      if (error) return response.status(500).json(error.errors);
+
+      response.json(data);
     }
   );
 });
