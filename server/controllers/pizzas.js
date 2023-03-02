@@ -15,7 +15,7 @@ router.post("/", (request, response) => {
 
 router.get("/", (request, response) => {
   Pizza.model.find({}, (error, data) => {
-    if (error?.name === 'ValidationError') return response.status(400).json(error.errors);
+    if (error.name && error.name === 'ValidationError') return response.status(400).json(error.errors);
     if (error) return response.status(500).json(error.errors);
 
     response.json(data);
@@ -24,7 +24,7 @@ router.get("/", (request, response) => {
 
 router.get("/:id", (request, response) => {
   Pizza.model.findById(request.params.id, (error, data) => {
-    if (error?.name === 'ValidationError') return response.status(400).json(error.errors);
+    if (error.name && error.name === 'ValidationError') return response.status(400).json(error.errors);
     if (error) return response.status(500).json(error.errors);
 
     response.json(data);
@@ -44,7 +44,7 @@ router.put("/:id", (request, response) => {
       }
     },
     (error, data) => {
-      if (error?.name === 'ValidationError') return response.status(400).json(error.errors);
+      if (error.name && error.name === 'ValidationError') return response.status(400).json(error.errors);
       if (error) return response.status(500).json(error.errors);
 
       response.json(data);
