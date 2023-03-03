@@ -31,7 +31,6 @@ const cors = (req, res, next) => {
 
 app.use(cors);
 app.use(express.json());
-app.use(logging);
 
 const MONGODB = process.env.MONGODB || "mongodb://localhost/pizza";
 
@@ -80,6 +79,9 @@ app
   .post((request, response) => {
     response.json(request);
   });
+
+// Moving the logging here so that the logs on render.com are not filled up with status checks
+app.use(logging);
 
 app.use("/pizzas", pizzas);
 app.use("/orders", orders);
