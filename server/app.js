@@ -36,13 +36,22 @@ app.use(logging);
 const MONGODB = process.env.MONGODB || "mongodb://localhost/pizza";
 
 // Database stuff
-mongoose.connect(MONGODB);
+mongoose.connect(
+  MONGODB,
+  { 
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }
+);
 const db = mongoose.connection;
 
 let db_status = "MongoDB connection not successful.";
 
 db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", () => (db_status = "Successfully opened connection to Mongo!"));
+db.once(
+  "open",
+  console.log.bind(console, "Successfully opened connection to Mongo!")
+);
 
 app.route("/").get((request, response) => {
   response.send("HELLO WORLD");
