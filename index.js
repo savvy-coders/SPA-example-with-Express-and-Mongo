@@ -135,12 +135,15 @@ router.hooks({
 
 router
   .on({
-    "/": () => {
-      render();
-    },
-    ":view": params => {
+    "/": () => render(),
+    ":view": (params) => {
       let view = capitalize(params.data.view);
-      render(store[view]);
-    }
+      if (store.hasOwnProperty(view)) {
+        render(store[view]);
+      } else {
+        render(store.Viewnotfound);
+        console.log(`View ${view} not defined`);
+      }
+    },
   })
   .resolve();
