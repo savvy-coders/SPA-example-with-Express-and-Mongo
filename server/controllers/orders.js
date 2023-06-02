@@ -1,8 +1,11 @@
-const express = require("express");
-const router = express.Router();
-const Order = require("../models/order");
-const Customer = require("../models/customer");
-const Pizza = require("../models/pizza");
+import express from 'express';
+import Order from '../models/order';
+import Customer from '../models/customer';
+import Pizza from '../models/pizza';
+
+import { Router } from 'express';
+
+const router = Router();
 
 // Create a new order with customer, pizza, delivery and notes documents
 router.post("/", (request, response) => {

@@ -1,8 +1,8 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-const pizzas = require("./controllers/pizzas");
-const orders = require("./controllers/orders");
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import pizzas from "./controllers/pizzas";
+import orders from "./controllers/orders";
 
 dotenv.config();
 

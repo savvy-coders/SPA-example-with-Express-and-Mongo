@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const deliverySchema = new mongoose.Schema({
   time: String,

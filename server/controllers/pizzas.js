@@ -1,7 +1,8 @@
-const { Router } = require("express");
+import { Router } from 'express';
+import mongoose from 'mongoose';
+import Pizza from '../models/pizza';
+
 const router = Router();
-const mongoose = require("mongoose");
-const Pizza = require("../models/pizza");
 
 router.post("/", (request, response) => {
   const newPizza = new Pizza.model(request.body);
