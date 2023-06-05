@@ -1,7 +1,6 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-const delivery = require("./delivery");
-const note = require("./note");
+import mongoose from "mongoose";
+import delivery from "./delivery";
+import note from "./note";
 
 // Demonstrate linking vs embedding
 const orderSchema = new mongoose.Schema({
