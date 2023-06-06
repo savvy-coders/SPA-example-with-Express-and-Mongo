@@ -87,7 +87,7 @@ function afterRender(state) {
                     store.notification.type = "error";
                     store.notification.visible = true;
                     store.notification.message = "Error retrieving pizzas";
-          
+
                     router.navigate('/pizza');
                   });
               })
@@ -97,7 +97,7 @@ function afterRender(state) {
                 store.notification.type = "error";
                 store.notification.visible = true;
                 store.notification.message = "Error deleting pizza";
-      
+
                 router.navigate('/pizza');
               })
           }
