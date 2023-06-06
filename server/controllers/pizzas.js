@@ -4,7 +4,7 @@ import Pizza from '../models/pizza.js';
 const router = Router();
 
 router.post("/", (request, response) => {
-  const newPizza = new Pizza.model(request.body);
+  const newPizza = new Pizza(request.body);
   newPizza.save((error, pizza) => {
     if (error && 'name' in error && error.name === 'ValidationError') return response.status(400).json(error.errors);
     if (error) return response.status(500).json(error.errors);
@@ -14,7 +14,7 @@ router.post("/", (request, response) => {
 });
 
 router.get("/", (request, response) => {
-  Pizza.model.find({}, (error, data) => {
+  Pizza.find({}, (error, data) => {
     if (error) return response.status(500).json(error.errors);
 
     response.json(data);
@@ -22,7 +22,7 @@ router.get("/", (request, response) => {
 });
 
 router.get("/:id", (request, response) => {
-  Pizza.model.findById(request.params.id, (error, data) => {
+  Pizza.findById(request.params.id, (error, data) => {
     if (error) return response.status(500).json(error.errors);
 
     response.json(data);
@@ -31,7 +31,7 @@ router.get("/:id", (request, response) => {
 
 router.put("/:id", (request, response) => {
   const body = request.body;
-  Pizza.model.findByIdAndUpdate(
+  Pizza.findByIdAndUpdate(
     request.params.id,
     {
       $set: {
@@ -51,7 +51,7 @@ router.put("/:id", (request, response) => {
 });
 
 router.delete("/:id", (request, response) => {
-  Pizza.model.findByIdAndRemove(request.params.id, {}, (error, data) => {
+  Pizza.findByIdAndRemove(request.params.id, {}, (error, data) => {
     if (error) return response.status(500).json(error.errors);
 
     response.json(data);
