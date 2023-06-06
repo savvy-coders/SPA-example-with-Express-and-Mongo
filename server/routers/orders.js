@@ -10,23 +10,28 @@ const router = Router();
 router.post("/", (request, response) => {
   const body = request.body;
 
-  // Create the subdocuments
-  const customer = new Customer.model(body.customer);
+  // Create and save the customer document in a seperate collection
+  const customer = new Customer(body.customer);
   customer.save();
 
-  const newOrder = new Order.model({});
+  // Create the 
+  const newOrder = new Order({});
 
+  // Create and save the pizza documents in a seperate collection
   const pizzaIds = body.pizzas.map(pizza => {
-    const newPizza = new Pizza.model({ ...pizza, order: newOrder._id });
+    // Add the order ID and customer ID to each pizza for cross reference purposes
+    const newPizza = new Pizza({ ...pizza, order: newOrder._id, customer: customer._id });
     newPizza.save();
     return newPizza._id;
   });
 
+  // Define the order using the above created IDs
   newOrder.pizzas = pizzaIds;
   newOrder.customer = customer._id;
   newOrder.notes = body.notes;
   newOrder.status = body.status;
 
+  // Create and save the order document in a seperate collection
   newOrder.save((error, data) => {
     if (error && 'name' in error && error.name === 'ValidationError') return response.status(400).json(error.errors);
     if (error) return response.status(500).json(error.errors);
@@ -41,12 +46,13 @@ router.get("/:id", (request, response) => {
   const params = request.params;
   const query = request.query;
   if (query.hasOwnProperty("raw") && query.raw === "true") {
-    Order.model.findById(params.id, (error, data) => {
+    Order.findById(params.id, (error, data) => {
       return error ? response.sendStatus(500).json(error) : response.json(data);
     });
   } else {
-    Order.model
+    Order
       .findById(params.id)
+      // Populate the customer and pizza documents from the IDs included in the order document
       .populate("customer")
       .populate("pizzas")
       .exec((error, data) => {
@@ -61,12 +67,13 @@ router.get("/:id", (request, response) => {
 router.get("/", (request, response) => {
   const query = request.query;
   if (query.hasOwnProperty("raw") && query.raw === "true") {
-    Order.model.find({}, (error, data) => {
+    Order.find({}, (error, data) => {
       return error ? response.sendStatus(500).json(error) : response.json(data);
     });
   } else {
-    Order.model
+    Order
       .find({})
+      // Populate the customer and pizza documents from the IDs included in the order document
       .populate("customer")
       .populate("pizzas")
       .exec((error, data) => {
@@ -80,7 +87,7 @@ router.get("/", (request, response) => {
 // Update a single orders pizza, delivery and notes subdocuments
 router.put("/:id", (request, response) => {
   const data = request.body;
-  Order.model.findByIdAndUpdate(
+  Order.findByIdAndUpdate(
     request.params.id,
     {
       $set: {
@@ -89,8 +96,9 @@ router.put("/:id", (request, response) => {
       }
     },
     (error, data) => {
+      // Iterate over the pizzas in the request and update as needed
       data.pizzas.forEach(pizza => {
-        Pizza.model.findByIdAndUpdate(
+        Pizza.findByIdAndUpdate(
           pizza._id,
           {
             $setOnInsert: {
@@ -118,10 +126,11 @@ router.put("/:id", (request, response) => {
 
 // Remove a single order and it's subdocuments
 router.delete("/:id", (request, response) => {
-  Order.model.findByIdAndDelete(request.params.id, {}, (error, data) => {
+  Order.findByIdAndDelete(request.params.id, {}, (error, data) => {
     if (error) response.sendStatus(500).json(error);
 
-    Pizza.model
+    // Remove the related pizza documents
+    Pizza
       .deleteMany()
       .where("_id")
       .in(data.pizzas)
@@ -129,7 +138,8 @@ router.delete("/:id", (request, response) => {
         if (error) return response.sendStatus(500).json(error);
       });
 
-    Customer.model.findByIdAndRemove(data.customer, error => {
+    // Remove the related customer document
+    Customer.findByIdAndRemove(data.customer, error => {
       if (error) return response.sendStatus(500).json(error);
     });
 
