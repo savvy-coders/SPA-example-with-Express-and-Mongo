@@ -15,23 +15,22 @@
     "since 2017-06"
   ],
   "devDependencies": {
-    "eslint": "^6.8.0",
+    "eslint": "^8",
     "eslint-config-prettier": "^6.15.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "nodemon": "^2.0.6",
+    "eslint-plugin-prettier": "^3.3.1",
+    "nodemon": "^2.0.22",
     "path-browserify": "^1.0.1",
     "prettier": "1.19.1",
-    "process": "^0.11.10"
+    "process": "^0.11.10",
+    "parcel": "^2.0.1"
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "body-parser": "^1.19.0",
     "dotenv": "^5.0.1",
     "express": "^4.17.1",
     "html-literal": "^1.1.0",
     "lodash": "^4.17.20",
     "mongoose": "^5.11.8",
-    "navigo": "^8.1.2",
-    "parcel": "^2.0.1"
+    "navigo": "^8.1.2"
   }
 }
