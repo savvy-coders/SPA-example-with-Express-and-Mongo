@@ -1,19 +1,16 @@
 import mongoose from "mongoose";
-import delivery from "./delivery";
-import note from "./note";
+import Delivery from "./delivery.js";
+import Note from "./note.js";
 
 // Demonstrate linking vs embedding
 const orderSchema = new mongoose.Schema({
-  pizzas: [{ type: Schema.Types.ObjectId, ref: "Pizza" }],
-  customer: { type: Schema.Types.ObjectId, ref: "Customer" },
-  delivery: delivery.schema,
-  notes: [note.schema],
+  pizzas: [{ type: mongoose.Schema.Types.ObjectId, ref: "Pizza" }],
+  customer: { type: mongoose.Schema.Types.ObjectId, ref: "Customer" },
+  delivery: Delivery.schema,
+  notes: [Note.schema],
   status: String
 });
 
 const Order = mongoose.model("Order", orderSchema);
 
-module.exports = {
-  model: Order,
-  schema: orderSchema
-};
+export default Order;

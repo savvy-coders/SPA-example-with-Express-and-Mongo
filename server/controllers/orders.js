@@ -1,7 +1,6 @@
-import express from 'express';
-import Order from '../models/order';
-import Customer from '../models/customer';
-import Pizza from '../models/pizza';
+import Order from '../models/order.js';
+import Customer from '../models/customer.js';
+import Pizza from '../models/pizza.js';
 
 import { Router } from 'express';
 
@@ -138,4 +137,4 @@ router.delete("/:id", (request, response) => {
   });
 });
 
-module.exports = router;
+export default router;
