@@ -1,6 +1,5 @@
 import { Router } from 'express';
-import mongoose from 'mongoose';
-import Pizza from '../models/pizza';
+import Pizza from '../models/pizza.js';
 
 const router = Router();
 
@@ -59,4 +58,4 @@ router.delete("/:id", (request, response) => {
   });
 });
 
-module.exports = router;
+export default router;

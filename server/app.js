@@ -1,8 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import pizzas from "./controllers/pizzas";
-import orders from "./controllers/orders";
+import pizzas from "./controllers/pizzas.js";
+import orders from "./controllers/orders.js";
 
 dotenv.config();
 
