@@ -4,63 +4,79 @@ import Pizza from '../models/pizza.js';
 const router = Router();
 
 // Create pizza route
-router.post("/", (request, response) => {
-  const newPizza = new Pizza(request.body);
-  newPizza.save((error, pizza) => {
-    if (error && 'name' in error && error.name === 'ValidationError') return response.status(400).json(error.errors);
-    if (error) return response.status(500).json(error.errors);
+router.post("/", async (request, response) => {
+  try {
+    const newPizza = new Pizza(request.body);
+    
+    const data = await newPizza.save();
 
-    response.json(pizza);
-  });
+    response.json(data);
+  } catch(error) {
+    if ('name' in error && error.name === 'ValidationError') return response.status(400).json(error.errors);
+    
+    return response.status(500).json(error.errors);
+  }
 });
 
 // Get all pizzas route
-router.get("/", (request, response) => {
-  Pizza.find({}, (error, data) => {
-    if (error) return response.status(500).json(error.errors);
+router.get("/", async (request, response) => {
+  try {
+    const data = await Pizza.find({});
 
     response.json(data);
-  });
+  } catch(error) {
+    return response.status(500).json(error.errors);
+  }
 });
 
 // Get a single pizza by ID
-router.get("/:id", (request, response) => {
-  Pizza.findById(request.params.id, (error, data) => {
-    if (error) return response.status(500).json(error.errors);
+router.get("/:id", async (request, response) => {
+  try {
+    const data = await Pizza.findById(request.params.id);
 
     response.json(data);
-  });
+  } catch(error) {
+    return response.status(500).json(error.errors)
+  }
 });
 
 // Update a single pizza by ID
-router.put("/:id", (request, response) => {
-  const body = request.body;
-  Pizza.findByIdAndUpdate(
-    request.params.id,
-    {
-      $set: {
-        crust: body.crust,
-        cheese: body.cheese,
-        sauce: body.sauce,
-        toppings: body.toppings
-      }
-    },
-    (error, data) => {
-      if (error && 'name' in error && error.name === 'ValidationError') return response.status(400).json(error.errors);
-      if (error) return response.status(500).json(error.errors);
+router.put("/:id", async (request, response) => {
+  try {
+    const body = request.body;
 
-      response.json(data);
-    }
-  );
+    const data = await Pizza.findByIdAndUpdate(
+      request.params.id,
+      {
+        $set: {
+          crust: body.crust,
+          cheese: body.cheese,
+          sauce: body.sauce,
+          toppings: body.toppings
+        }
+      },
+      {
+        new: true
+      }
+    );
+
+    response.json(data);
+  } catch(error) {
+    if ('name' in error && error.name === 'ValidationError') return response.status(400).json(error.errors);
+    
+    return response.status(500).json(error.errors);
+  }
 });
 
 // Delete a pizza by ID
-router.delete("/:id", (request, response) => {
-  Pizza.findByIdAndRemove(request.params.id, {}, (error, data) => {
-    if (error) return response.status(500).json(error.errors);
+router.delete("/:id", async (request, response) => {
+  try {
+    const data = Pizza.findByIdAndRemove(request.params.id, {});
 
     response.json(data);
-  });
+  } catch(error) {
+    return response.status(500).json(error.errors);
+  }
 });
 
 export default router;

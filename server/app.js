@@ -53,10 +53,6 @@ db.once(
   console.log.bind(console, "Successfully opened connection to Mongo!")
 );
 
-// Define a root route
-app.route("/").get((request, response) => {
-  response.send("HELLO WORLD");
-});
 
 // Define a status route
 app.get("/status", (request, response) => {
