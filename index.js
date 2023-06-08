@@ -31,15 +31,14 @@ function render(state = store.home) {
 }
 
 function afterRender(state) {
-  // Add to every view
-
-  // add menu toggle to bars icon in nav bar
+  // Add menu toggle to bars icon in nav bar which is rendered on every page
   document
     .querySelector(".fa-bars")
     .addEventListener("click", () =>
       document.querySelector("nav > ul").classList.toggle("hidden--mobile")
     );
 
+  // Run this code if the pizza view is requested
   if (state.view === "pizza") {
     document.querySelectorAll('.delete-button')
       .forEach(domElement => {
@@ -74,6 +73,7 @@ function afterRender(state) {
       });
   }
 
+  // Run this code if the order view is requested
   if (state.view === "order") {
     document.querySelector("form").addEventListener("submit", event => {
       event.preventDefault();
@@ -98,6 +98,7 @@ function afterRender(state) {
       axios
         .post(`${PIZZA_PLACE_API_URL}/pizzas`, requestData)
         .then(response => {
+          // Push the new pizza to the store so we don't have to reload from the API
           store.pizza.pizzas.push(response.data);
           router.navigate("/pizza");
         })
@@ -110,13 +111,16 @@ function afterRender(state) {
 
 router.hooks({
   // Use object deconstruction to store the data and (query)params from the Navigo match parameter
+  // Runs before a route handler that the match is hasn't been visited already
   before: (done, { data, params }) => {
     // Check if data is null, view property exists, if not set view equal to "home"
     // using optional chaining (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
     const view = data?.view ? camelCase(data.view) : "home";
 
-    // Add a switch case statement to handle multiple routes
+    // Add a switch/case statement to handle multiple routes
+    // Use a switch/case since we must execute done() regardless of the view being requested
     switch (view) {
+      // Run this code if the home view is requested
       case "home": {
         axios
           .get(
@@ -143,6 +147,7 @@ router.hooks({
           });
         break;
       }
+      // Run this code if the pizza view is requested
       case "pizza": {
         axios
           .get(`${process.env.PIZZA_PLACE_API_URL}/pizzas`)
@@ -156,11 +161,13 @@ router.hooks({
           });
         break;
       }
+      // Run this code if the view is not listed above
       default: {
         done();
       }
     }
   },
+  // Runs before a route handler that is already the match is already being visited
   already: ({ data, params }) => {
     const view = data?.view ? camelCase(data.view) : "home";
 
