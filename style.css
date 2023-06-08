@@ -117,6 +117,9 @@ footer {
   margin: 1rem 1rem;
 }
 
+.topping-list li {
+  list-style: none;
+}
 
 @media (max-width: 549px){
   .hidden--mobile {

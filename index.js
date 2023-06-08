@@ -98,8 +98,7 @@ function afterRender(state) {
       axios
         .post(`${PIZZA_PLACE_API_URL}/pizzas`, requestData)
         .then(response => {
-          console.log(response.data);
-          store.Pizza.pizzas.push(response.data);
+          store.pizza.pizzas.push(response.data);
           router.navigate("/pizza");
         })
         .catch(error => {
@@ -176,7 +175,6 @@ router
     // (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
     // This reduces the number of checks that need to be performed
     ":view": ({ data, params }) => {
-      console.log('matsinet - data.view:', data?.view);
       // Change the :view data element to camel case and remove any dashes (support for multi-word views)
       const view = data?.view ? camelCase(data.view) : "home";
       if (view in store) {
