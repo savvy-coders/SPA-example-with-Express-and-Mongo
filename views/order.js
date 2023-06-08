@@ -6,13 +6,7 @@ export default state => html`
     <h2>Order a pizza</h2>
     <div>
       <label for="customer">Customer Name:</label>
-      <input
-        type="text"
-        name="customer"
-        id="customer"
-        placeholder="Enter Name"
-        required
-      />
+      <input type="text" name="customer" id="customer" placeholder="Enter Name" required />
     </div>
     <div>
       <label for="crust">Crust:</label>
@@ -47,16 +41,19 @@ export default state => html`
     </div>
     <div>
       <label for="toppings">Toppings:</label>
-      ${state.availableToppings.map(topping => {
+      <ul class="topping-list">
+        ${state.availableToppings.map(topping => {
           const id = kebabCase(topping) + `-checkbox`;
-          return html`<input
+          return html`<li><input
             type="checkbox"
             id="${id}"
             name="toppings"
             value="${topping}"
           />
-          <label for="${id}" class="topping-label">${topping}</label>`
+          <label for="${id}" class="topping-label">${topping}</label></li>`
         }).join("")}
+      </ul>
+
     </div>
     <input type="submit" name="submit" value="Submit Pizza" />
   </form>
