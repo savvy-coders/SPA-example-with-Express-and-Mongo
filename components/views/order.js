@@ -1,6 +1,7 @@
 import html from "html-literal";
+import { kebabCase } from "lodash";
 
-export default () => html`
+export default state => html`
   <form id="order" method="POST" action="">
     <h2>Order a pizza</h2>
     <div>
@@ -46,46 +47,16 @@ export default () => html`
     </div>
     <div>
       <label for="toppings">Toppings:</label>
-      <input
-        type="checkbox"
-        id="id_of_checkbox1"
-        class="items1"
-        name="toppings"
-        value="Chicken"
-      />
-      <label for="top1">Chicken</label>
-      <input
-        type="checkbox"
-        id="id_of_checkbox2"
-        class="items1"
-        name="toppings"
-        value="Onion"
-      />
-      <label for="top2">Onion</label>
-      <input
-        type="checkbox"
-        id="id_of_checkbox3"
-        class="items1"
-        name="toppings"
-        value="Spinach"
-      />
-      <label for="top3">Spinach</label>
-      <input
-        type="checkbox"
-        id="id_of_checkbox4"
-        class="items1"
-        name="toppings"
-        value="Extra cheese"
-      />
-      <label for="top4">Extra Cheese</label>
-      <input
-        type="checkbox"
-        id="id_of_checkbox5"
-        class="items1"
-        name="toppings"
-        value="Red Pepper"
-      />
-      <label for="top5">Red Pepper</label>
+      ${state.availableToppings.map(topping => {
+          const id = kebabCase(topping) + `-checkbox`;
+          return html`<input
+            type="checkbox"
+            id="${id}"
+            name="toppings"
+            value="${topping}"
+          />
+          <label for="${id}" class="topping-label">${topping}</label>`
+        }).join("")}
     </div>
     <input type="submit" name="submit" value="Submit Pizza" />
   </form>
