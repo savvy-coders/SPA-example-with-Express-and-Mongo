@@ -11,7 +11,6 @@ export default state => html`
         <option value="thin">Thin</option>
         <option value="chicago">Chicago</option>
         <option value="deep-dish">Deep Dish</option>
-        <option value="thick">Thick</option>
         <option value="hella-thick">Hella Thick</option>
       </select>
     </div>
@@ -37,22 +36,25 @@ export default state => html`
     </div>
     <div>
       <label for="toppings">Toppings:</label>
-      ${state.availableToppings.map(topping => {
+      <ul class="topping-list">
+        ${state.availableToppings.map(topping => {
           const id = kebabCase(topping) + `-checkbox`;
-          return html`<input
+          return html`<li><input
             type="checkbox"
             id="${id}"
             name="toppings"
             value="${topping}"
           />
-          <label for="${id}" class="topping-label">${topping}</label>`
+          <label for="${id}" class="topping-label">${topping}</label></li>`
         }).join("")}
+      </ul>
+
     </div>
     <input
         type="hidden"
         name="customer"
         id="customer"
-        value="<Your Name>"
+        value="Matt T"
       />
     <input type="submit" name="submit" value="Submit Pizza" />
   </form>
