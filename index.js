@@ -130,8 +130,6 @@ function afterRender(state) {
       axios
         .post(`${PIZZA_PLACE_API_URL}/pizzas`, requestData)
         .then(response => {
-          // Push the new pizza to the store so we don't have to reload from the API
-          store.pizza.pizzas.push(response.data);
           router.navigate("/pizza");
         })
         .catch(error => {
