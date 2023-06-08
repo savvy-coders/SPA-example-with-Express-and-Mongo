@@ -15,7 +15,6 @@ export default state => html`
         <option value="thin">Thin</option>
         <option value="chicago">Chicago</option>
         <option value="deep-dish">Deep Dish</option>
-        <option value="thick">Thick</option>
         <option value="hella-thick">Hella Thick</option>
       </select>
     </div>
