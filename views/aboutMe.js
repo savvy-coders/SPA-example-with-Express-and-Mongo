@@ -33,6 +33,7 @@ export default state => html`
       pharetra nec odio ac, ornare vulputate nibh.
     </p>
   </section>
+<<<<<<< HEAD
 `;
 export default state => html`
   <section id="bio">
@@ -66,4 +67,6 @@ export default state => html`
       pharetra nec odio ac, ornare vulputate nibh.
     </p>
   </section>
+=======
+>>>>>>> af9a204188c24e22aa12258e1e211786fe4c25d7
 `;
