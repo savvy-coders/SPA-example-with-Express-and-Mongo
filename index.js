@@ -1,4 +1,4 @@
-import { header, nav, main, footer } from "./components";
+import { header, nav, main, footer, notification } from "./components";
 import * as store from "./store";
 import axios from "axios";
 import Navigo from "navigo";
@@ -20,7 +20,8 @@ const router = new Navigo("/");
 function render(state = store.home) {
   document.querySelector("#root").innerHTML = `
     ${header(state)}
-    ${nav(store.links)}
+    ${notification(store.notification)}
+    ${nav(store.nav)}
     ${main(state)}
     ${footer()}
   `;
@@ -37,6 +38,11 @@ function afterRender(state) {
     .addEventListener("click", () =>
       document.querySelector("nav > ul").classList.toggle("hidden--mobile")
     );
+
+  document.getElementById('notification').addEventListener('close', event => {
+    store.notification.visible = false;
+    store.notification.showCount = 0;
+  });
 
   // Run this code if the home view is requested
   if (state.view === "home") {
@@ -61,7 +67,10 @@ function afterRender(state) {
               .delete(`${process.env.PIZZA_PLACE_API_URL}/pizzas/${id}`)
               .then(deleteResponse => {
                 if (deleteResponse.status === 200) {
-                  alert(`Pizza ${id} was successfully deleted`)
+                  store.notification.type = "success";
+                  store.notification.visible = true;
+                  store.notification.dismissable = true;
+                  store.notification.message = `Pizza ${id} was successfully deleted`;
                 }
 
                 // Update the list of pizza after removing the pizza
@@ -73,11 +82,23 @@ function afterRender(state) {
                     router.navigate('/pizza');
                   })
                   .catch((error) => {
-                    console.log("It puked", error);
+                    console.error("Error retrieving pizzas", error);
+
+                    store.notification.type = "error";
+                    store.notification.visible = true;
+                    store.notification.message = "Error retrieving pizzas";
+          
+                    router.navigate('/pizza');
                   });
               })
               .catch(error => {
-                alert(`Error deleting pizza ${id}\n${error}`);
+                console.error("Error deleting pizza", error);
+
+                store.notification.type = "error";
+                store.notification.visible = true;
+                store.notification.message = "Error deleting pizza";
+      
+                router.navigate('/pizza');
               })
           }
         });
@@ -114,9 +135,28 @@ function afterRender(state) {
           router.navigate("/pizza");
         })
         .catch(error => {
-          console.log("It puked", error);
+          console.error("Error storing new pizza", error);
+
+          store.notification.type = "error";
+          store.notification.visible = true;
+          store.notification.message = "Error storing new pizza";
+
+          router.navigate('/order');
         });
     });
+  }
+}
+
+function updateNotification() {
+  // Hide the notification component if it is visible and not dismissable
+  if (store.notification.visible && store.notification.dismissable === false) {
+    if (store.notification.showCount >= 1) {
+      // Hide the notification after it has been shown once
+      store.notification.visible = false;
+      store.notification.showCount = 0;
+    } else {
+      store.notification.showCount += 1;
+    }
   }
 }
 
@@ -128,11 +168,16 @@ router.hooks({
     // using optional chaining (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
     const view = data?.view ? camelCase(data.view) : "home";
 
+    updateNotification();
+
     // Add a switch/case statement to handle multiple routes
     // Use a switch/case since we must execute done() regardless of the view being requested
     switch (view) {
       // Run this code if the home view is requested
       case "home": {
+        // store.notification.visible = true;
+        // store.notification.message = "Testing the notification dialog";
+
         const kelvinToFahrenheit = kelvinTemp => Math.round((kelvinTemp - 273.15) * (9 / 5) + 32);
 
         try {
@@ -164,21 +209,32 @@ router.hooks({
           done();
         } catch(error) {
           console.error("Error retrieving weather data", error);
+
+          store.notification.type = "error";
+          store.notification.visible = true;
+          store.notification.message = "Error retrieving weather data";
+
+          done();
         }
         break;
       }
       // Run this code if the pizza view is requested
       case "pizza": {
-        axios
-          .get(`${process.env.PIZZA_PLACE_API_URL}/pizzas`)
-          .then((response) => {
-            store.pizza.pizzas = response.data;
-            done();
-          })
-          .catch((error) => {
-            console.log("It puked", error);
-            done();
-          });
+        try {
+          const response = await axios.get(`${process.env.PIZZA_PLACE_API_URL}/pizzas`);
+
+          store.pizza.pizzas = response.data;
+
+          done();
+        } catch(error) {
+          console.log("Error retrieving pizza data", error);
+
+          store.notification.type = "error";
+          store.notification.visible = true;
+          store.notification.message = "Error retrieving pizza data";
+
+          done();
+        }
         break;
       }
       // Run this code if the view is not listed above
@@ -190,6 +246,8 @@ router.hooks({
   // Runs before a route handler that is already the match is already being visited
   already: ({ data, params }) => {
     const view = data?.view ? camelCase(data.view) : "home";
+
+    updateNotification();
 
     render(store[view]);
   }
