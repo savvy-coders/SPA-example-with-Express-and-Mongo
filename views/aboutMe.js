@@ -2,10 +2,12 @@ import html from "html-literal";
 import dogPic from "../assets/img/dog-with-flower.jpg";
 
 export default state => html`
-  <section id="bio">
+  <section id="about-me">
     <h2>Vivamus ac justo eu nisi</h2>
     <img src="${dogPic}" alt="me" />
-    <p>${state.paragraph} ADDITIONAL SOMETHING ELSE</p>
+    <h3>Dynamic paragraph loaded from state</h3>
+    <p>${state.paragraph}</p>
+    <hr>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eu sagittis
       nulla. Etiam semper mauris a quam tempus, non feugiat massa posuere. Morbi
