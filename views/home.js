@@ -1,9 +1,8 @@
 import html from "html-literal";
 
 export default (state) => html`
-  <h3>
-    Weather in ${state.weather.city} ${state.weather.temp}F, feels like
-    ${state.weather.feelsLike}F
+  <h3 id="weather">
+    Weather in ${state.weather.city} ${state.weather.temp}F, feels like ${state.weather.feelsLike}F
   </h3>
   <section id="jumbotron">
     <h2>SavvyCoders JavaScript Fullstack Bootcamp</h2>
