@@ -165,50 +165,6 @@ router.hooks({
         } catch(error) {
           console.error("Error retrieving weather data", error);
         }
-
-        // This is the traditional nested promises aka callback hell scenario 
-        /*
-        navigator.geolocation.getCurrentPosition(
-          positionResponse => {
-            const location = {latitude: positionResponse.coords.latitude, longitude: positionResponse.coords.longitude};
-
-            axios
-              .get(`http://api.openweathermap.org/geo/1.0/reverse?lat=${location.latitude}8&lon=${location.longitude}&limit=3&appid=${process.env.OPEN_WEATHER_MAP_API_KEY}`)
-              .then(geoResponse => {
-                const city = geoResponse.data[0];
-                axios
-                  .get(
-                    `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}&q=${city.name},${city.state}`
-                  )
-                  .then((response) => {
-                    const kelvinToFahrenheit = kelvinTemp => Math.round((kelvinTemp - 273.15) * (9 / 5) + 32);
-
-                    store.home.weather = {
-                      city: response.data.name,
-                      temp: kelvinToFahrenheit(response.data.main.temp),
-                      feelsLike: kelvinToFahrenheit(response.data.main.feels_like),
-                      description: response.data.weather[0].main
-                    };
-                    done();
-                  })
-                  .catch((error) => {
-                    console.log("Error retrieving weather", error);
-                    done();
-                  });
-              })
-              .catch((error) => {
-                console.log("Error finding city name", error);
-                done();
-              });
-          },
-          error => {
-            console.log("Error finding curront location", error);
-            done();
-          },
-          options
-        );
-        */
-
         break;
       }
       // Run this code if the pizza view is requested
