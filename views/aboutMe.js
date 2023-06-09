@@ -1,7 +1,8 @@
 import html from "html-literal";
 import dogPic from "../assets/img/dog-with-flower.jpg";
 
-export default state => html`
+const render = state => {
+  return html`
   <section id="about-me">
     <h2>Vivamus ac justo eu nisi</h2>
     <img src="${dogPic}" alt="me" />
@@ -36,3 +37,19 @@ export default state => html`
     </p>
   </section>
 `;
+}
+
+const beforeHook = (done, { data, params }) => {
+  done();
+};
+
+// const alreadyHook = ({ data, params }) => {};
+
+const afterHook = ({ data, params }) => {};
+
+export default {
+  render,
+  beforeHook,
+  alreadyHook: beforeHook,
+  afterHook
+}
