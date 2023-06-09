@@ -1,5 +1,6 @@
 import html from 'html-literal';
 import axios from "axios";
+import "../assets/css/views/pizza.css"
 
 const render = state => {
   return html`

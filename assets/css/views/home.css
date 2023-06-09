@@ -1,0 +1,26 @@
+#jumbotron {
+    background: url(../../img/wavey-grid.jpg) center center no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+  }
+  
+  #jumbotron > h2 {
+    color: white;
+    text-align: center;
+  }
+  
+  #jumbotron > a {
+    text-decoration: none;
+    background-color: white;
+    font-size: 1.5em;
+    padding: 1.5rem;
+    border-radius: 10px;
+  }
+  
+  #jumbotron > a:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+  }

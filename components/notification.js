@@ -1,4 +1,5 @@
 import html from "html-literal";
+import "../assets/css/components/notification.css"
 
 const render = state => {
   return html`

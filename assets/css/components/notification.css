@@ -1,0 +1,24 @@
+dialog {
+    position: relative;
+    border-radius: 10px;
+    padding-left: 2em;
+    padding-right: 2em;
+    font-weight: bold;
+    max-width: 90vw;
+}
+
+dialog > pre {
+    white-space: pre-wrap;  
+}
+
+.dialog-success {
+    border-color: rgb(0, 107, 98);
+    background-color: rgba(0, 107, 98, 0.6);
+    color: white;
+}
+
+.dialog-error {
+    border-color: #ff3e2c;
+    background-color: #ffe8e6;
+    color: #ff3e2c;
+}

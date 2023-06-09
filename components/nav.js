@@ -1,4 +1,5 @@
 import html from 'html-literal';
+import "../assets/css/components/nav.css"
 
 const render = links => {
   return html`

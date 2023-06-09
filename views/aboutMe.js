@@ -1,4 +1,5 @@
 import html from "html-literal";
+import "../assets/css/views/aboutMe.css"
 import dogPic from "../assets/img/dog-with-flower.jpg";
 
 const render = state => {

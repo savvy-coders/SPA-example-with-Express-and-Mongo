@@ -1,0 +1,34 @@
+#about-me {
+    margin: 1rem;
+}
+
+#about-me>h2 {
+    color: darkblue;
+    font-size: xx-large;
+}
+
+#about-me img {
+    border-radius: 75px;
+    max-height: 500px;
+}
+
+@media (max-width: 549px) {
+    #about-me img {
+        width: 40%;
+        height: auto;
+        margin-left: 30%;
+    }
+}
+
+@media (min-width: 550px) {
+    #about-me {
+        margin-right: 3rem;
+    }
+
+    #about-me img {
+        float: left;
+        width: 25%;
+        height: auto;
+        margin-right: 1rem;
+    }
+}

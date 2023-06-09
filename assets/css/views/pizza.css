@@ -1,0 +1,32 @@
+:root {
+    --action-column-width: 80px;
+    --column-width: calc(((100% - var(--action-column-width))/ 6) * 1px);
+}
+
+#pizzas {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.2em;
+    height: auto;
+    width: 92.5%;
+    margin: 20px auto;
+    border: 1px solid black;
+    padding: 10px;
+    table-layout: fixed;
+}
+
+#pizzas tbody {
+    width: 100%;
+}
+
+#pizzas th {
+    text-align: left;
+}
+
+#pizzas td, th {
+    width: var(--column-width);
+}
+
+#pizzas td:last-child,
+#pizzas th:last-child {
+    width: var(--action-column-width);
+}

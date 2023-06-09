@@ -1,5 +1,6 @@
 import html from 'html-literal';
 import axios from "axios";
+import "../assets/css/views/home.css";
 
 const render = state => {
   return html`
