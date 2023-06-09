@@ -123,7 +123,7 @@ function afterRender(state) {
 router.hooks({
   // Use object deconstruction to store the data and (query)params from the Navigo match parameter
   // Runs before a route handler that the match is hasn't been visited already
-  before: (done, { data, params }) => {
+  before: async (done, { data, params }) => {
     // Check if data is null, view property exists, if not set view equal to "home"
     // using optional chaining (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
     const view = data?.view ? camelCase(data.view) : "home";
@@ -133,29 +133,82 @@ router.hooks({
     switch (view) {
       // Run this code if the home view is requested
       case "home": {
-        axios
-          .get(
-            `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}4&q=st%20louis`
-          )
-          .then((response) => {
-            const kelvinToFahrenheit = (kelvinTemp) =>
-              Math.round((kelvinTemp - 273.15) * (9 / 5) + 32);
+        const kelvinToFahrenheit = kelvinTemp => Math.round((kelvinTemp - 273.15) * (9 / 5) + 32);
 
-            store.home.weather = {};
-            store.home.weather.city = response.data.name;
-            store.home.weather.temp = kelvinToFahrenheit(
-              response.data.main.temp
-            );
-            store.home.weather.feelsLike = kelvinToFahrenheit(
-              response.data.main.feels_like
-            );
-            store.home.weather.description = response.data.weather[0].main;
-            done();
-          })
-          .catch((err) => {
-            console.log(err);
-            done();
+        try {
+          const positionResponse = await new Promise((resolve, reject) => {
+            const options = {
+              enableHighAccuracy: true,
+              timeout: 5000,
+              maximumAge: 0
+            }
+
+            return navigator.geolocation.getCurrentPosition(resolve, reject, options);
           });
+
+          const location = {latitude: positionResponse.coords.latitude, longitude: positionResponse.coords.longitude};
+
+          const geoResponse = await axios.get(`http://api.openweathermap.org/geo/1.0/reverse?lat=${location.latitude}8&lon=${location.longitude}&limit=3&appid=${process.env.OPEN_WEATHER_MAP_API_KEY}`);
+
+          const city = geoResponse.data[0];
+
+          const weatherResponse = await axios.get(`https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}&q=${city.name},${city.state}`);
+
+          store.home.weather = {
+            city: weatherResponse.data.name,
+            temp: kelvinToFahrenheit(weatherResponse.data.main.temp),
+            feelsLike: kelvinToFahrenheit(weatherResponse.data.main.feels_like),
+            description: weatherResponse.data.weather[0].main
+          };
+
+          done();
+        } catch(error) {
+          console.error("Error retrieving weather data", error);
+        }
+
+        // This is the traditional nested promises aka callback hell scenario 
+        /*
+        navigator.geolocation.getCurrentPosition(
+          positionResponse => {
+            const location = {latitude: positionResponse.coords.latitude, longitude: positionResponse.coords.longitude};
+
+            axios
+              .get(`http://api.openweathermap.org/geo/1.0/reverse?lat=${location.latitude}8&lon=${location.longitude}&limit=3&appid=${process.env.OPEN_WEATHER_MAP_API_KEY}`)
+              .then(geoResponse => {
+                const city = geoResponse.data[0];
+                axios
+                  .get(
+                    `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}&q=${city.name},${city.state}`
+                  )
+                  .then((response) => {
+                    const kelvinToFahrenheit = kelvinTemp => Math.round((kelvinTemp - 273.15) * (9 / 5) + 32);
+
+                    store.home.weather = {
+                      city: response.data.name,
+                      temp: kelvinToFahrenheit(response.data.main.temp),
+                      feelsLike: kelvinToFahrenheit(response.data.main.feels_like),
+                      description: response.data.weather[0].main
+                    };
+                    done();
+                  })
+                  .catch((error) => {
+                    console.log("Error retrieving weather", error);
+                    done();
+                  });
+              })
+              .catch((error) => {
+                console.log("Error finding city name", error);
+                done();
+              });
+          },
+          error => {
+            console.log("Error finding curront location", error);
+            done();
+          },
+          options
+        );
+        */
+
         break;
       }
       // Run this code if the pizza view is requested
