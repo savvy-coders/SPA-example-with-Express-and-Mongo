@@ -21,27 +21,31 @@ const render = state => {
   `;
 }
 
-const beforeHook = async (done, { data, params }) => {
+const beforeHook = async (done, match) => {
   try {
     const response = await axios.get(`${process.env.PIZZA_PLACE_API_URL}/pizzas`);
 
-    window.store.pizza.pizzas = response.data;
+    store.pizza.pizzas = response.data;
 
-    done();
+    if (typeof done === 'function') {
+      done();
+    }
   } catch(error) {
     console.log("Error retrieving pizza data", error);
 
-    window.store.notification.type = "error";
-    window.store.notification.visible = true;
-    window.store.notification.message = "Error retrieving pizza data";
+    store.notification.type = "error";
+    store.notification.visible = true;
+    store.notification.message = "Error retrieving pizza data";
 
-    done();
+    if (typeof done === 'function') {
+      done();
+    }
   }
 };
 
-// const alreadyHook = ({ data, params }) => {};
+// const alreadyHook = match => {};
 
-const afterHook = (match) => {
+const afterHook = match => {
   document.querySelectorAll('.delete-button')
     .forEach(domElement => {
       domElement.addEventListener('click', event => {

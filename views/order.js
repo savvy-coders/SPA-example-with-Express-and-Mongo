@@ -63,13 +63,13 @@ const render = state => {
 `;
 }
 
-const beforeHook = (done, { data, params }) => {
+const beforeHook = (done, match) => {
   done();
 };
 
-// const alreadyHook = ({ data, params }) => {};
+// const alreadyHook = match => {};
 
-const afterHook = ({ data, params }) => {
+const afterHook = match => {
   document.querySelector("form").addEventListener("submit", event => {
     event.preventDefault();
 

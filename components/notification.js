@@ -22,9 +22,9 @@ const beforeHook = (done, match) => {
   }
 }
 
-const alreadyHook = ({ data, params }) => {};
+const alreadyHook = match => {};
 
-const afterHook = (match) => {
+const afterHook = match => {
   document.getElementById('notification').addEventListener('close', event => {
     store.notification.visible = false;
     store.notification.showCount = 0;

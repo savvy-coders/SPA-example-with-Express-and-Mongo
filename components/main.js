@@ -6,11 +6,11 @@ const render = state => {
   return html`<div id="main">${views[state.view].render(state)}</div>`;
 }
 
-const beforeHook = (done, { data, params }) => {};
+const beforeHook = (done, match) => {};
 
-const alreadyHook = ({ data, params }) => {};
+const alreadyHook = match => {};
 
-const afterHook = ({ data, params }) => {};
+const afterHook = match => {};
 
 export default {
   render,

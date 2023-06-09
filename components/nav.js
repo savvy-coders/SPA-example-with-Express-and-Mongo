@@ -22,11 +22,11 @@ const render = links => {
   `;;
 }
 
-const beforeHook = (done, { data, params }) => {};
+const beforeHook = (done, match) => {};
 
-const alreadyHook = ({ data, params }) => {};
+const alreadyHook = match => {};
 
-const afterHook = ({ data, params }) => {
+const afterHook = match => {
   // Add menu toggle to bars icon in nav bar which is rendered on every page
   document.querySelector(".fa-bars").addEventListener("click", () =>
     document.querySelector("nav > ul").classList.toggle("hidden--mobile")

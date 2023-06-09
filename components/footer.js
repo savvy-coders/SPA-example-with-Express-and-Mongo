@@ -7,13 +7,13 @@ const render = state => {
 </footer>`;
 }
 
-const beforeHook = (done, { data, params }) => {
+const beforeHook = (done, match) => {
   store.footer.year = new Date().getFullYear();
 };
 
-const alreadyHook = ({ data, params }) => {};
+const alreadyHook = match => {};
 
-const afterHook = ({ data, params }) => {};
+const afterHook = match => {};
 
 export default {
   render,
