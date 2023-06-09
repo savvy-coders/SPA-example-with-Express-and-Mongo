@@ -13,7 +13,7 @@ const render = state => {
 `;
 }
 
-const beforeHook = async (done, { data, params }) => {
+const beforeHook = async (done, match) => {
   const kelvinToFahrenheit = kelvinTemp => Math.round((kelvinTemp - 273.15) * (9 / 5) + 32);
 
   try {
@@ -54,9 +54,9 @@ const beforeHook = async (done, { data, params }) => {
   }
 };
 
-const alreadyHook = ({ data, params }) => {};
+const alreadyHook = match => {};
 
-const afterHook = ({ data, params }) => {
+const afterHook = match => {
   document.getElementById('action-button').addEventListener('click', event => {
     event.preventDefault();
 
