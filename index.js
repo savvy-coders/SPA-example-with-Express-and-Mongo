@@ -5,6 +5,7 @@ import Navigo from "navigo";
 import { camelCase } from "lodash";
 
 window.router = new Navigo("/");
+window.store = store
 
 function render(state = store.home) {
   document.querySelector("#root").innerHTML = `

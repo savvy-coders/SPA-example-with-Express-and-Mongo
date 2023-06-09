@@ -1,7 +1,6 @@
 import html from "html-literal";
 import { kebabCase } from "lodash";
 import axios from "axios";
-import * as store from "../store";
 
 const render = state => {
   return html`

@@ -1,6 +1,5 @@
 import html from 'html-literal';
 import axios from "axios";
-import * as store from "../store";
 
 const render = state => {
   return html`
@@ -26,15 +25,15 @@ const beforeHook = async (done, { data, params }) => {
   try {
     const response = await axios.get(`${process.env.PIZZA_PLACE_API_URL}/pizzas`);
 
-    store.pizza.pizzas = response.data;
+    window.store.pizza.pizzas = response.data;
 
     done();
   } catch(error) {
     console.log("Error retrieving pizza data", error);
 
-    store.notification.type = "error";
-    store.notification.visible = true;
-    store.notification.message = "Error retrieving pizza data";
+    window.store.notification.type = "error";
+    window.store.notification.visible = true;
+    window.store.notification.message = "Error retrieving pizza data";
 
     done();
   }
@@ -42,7 +41,7 @@ const beforeHook = async (done, { data, params }) => {
 
 // const alreadyHook = ({ data, params }) => {};
 
-const afterHook = ({ data, params }) => {
+const afterHook = (match) => {
   document.querySelectorAll('.delete-button')
     .forEach(domElement => {
       domElement.addEventListener('click', event => {

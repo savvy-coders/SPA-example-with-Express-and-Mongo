@@ -1,5 +1,4 @@
 import html from 'html-literal';
-import * as store from "../store";
 
 const render = state => {
   return html`

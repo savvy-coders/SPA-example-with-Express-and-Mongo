@@ -1,6 +1,5 @@
 import html from 'html-literal';
 import axios from "axios";
-import * as store from "../store";
 
 const render = state => {
   return html`
