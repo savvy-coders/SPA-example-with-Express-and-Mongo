@@ -4,7 +4,7 @@ body {
 
 header > h1 {
   margin: 5px;
-  color: blueviolet;
+  color: rgb(0, 107, 98);
 }
 
 #jumbotron {
@@ -31,20 +31,23 @@ header > h1 {
 }
 
 #jumbotron > a:hover {
-  font-weight: 700;
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
+/* === about-me === */
 
-/* === BIO === */
-
-#bio {
+#about-me {
   margin: 1rem;
 }
 
-#bio > h2 {
-  color: rosybrown;
+#about-me > h2 {
+  color: darkblue;
   font-size: xx-large;
-  border: 1px solid red;
+}
+
+#about-me img {
+  border-radius: 75px;
+  max-height: 500px;
 }
 
 #bioFluff > p {
@@ -149,18 +152,16 @@ footer {
     list-style-type: none;
   }
 
-  #bio img {
-    float: left;
+  #about-me img {
     width: 40%;
     height: auto;
-    margin-right: 1rem;
+    margin-left: 30%;
   }
 
   #pizzaTable{
     margin: 15px;
   }
 }
-
 
 @media (min-width: 550px) {
   nav > ul {
@@ -189,11 +190,11 @@ footer {
     display: none;
   }
 
-  #bio {
+  #about-me {
     margin-right: 3rem;
   }
 
-  #bio img {
+  #about-me img {
     float: left;
     width: 25%;
     height: auto;

@@ -38,6 +38,17 @@ function afterRender(state) {
       document.querySelector("nav > ul").classList.toggle("hidden--mobile")
     );
 
+  // Run this code if the home view is requested
+  if (state.view === "home") {
+    document.getElementById('action-button').addEventListener('click', event => {
+      event.preventDefault();
+
+      alert('Hello! You clicked the action button! Redirecting to the pizza view');
+
+      router.navigate('/pizza');
+    });
+  }
+
   // Run this code if the pizza view is requested
   if (state.view === "pizza") {
     document.querySelectorAll('.delete-button')
