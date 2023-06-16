@@ -1,4 +1,4 @@
-import { header, nav, main, footer, notification } from "./components";
+import * as components from "./components";
 import * as views from "./views";
 import * as store from "./store";
 import Navigo from "navigo";
@@ -7,40 +7,56 @@ import { camelCase } from "lodash";
 window.router = new Navigo("/");
 window.store = store
 
+const hookComponents = [
+  "header",
+  "nav",
+  "main",
+  "footer",
+  "notification"
+];
+
 function render(state = store.home) {
   document.querySelector("#root").innerHTML = `
-    ${header.render(state)}
-    ${notification.render(store.notification)}
-    ${nav.render(store.nav)}
-    ${main.render(state)}
-    ${footer.render(store.footer)}
+    ${components.header.render(state)}
+    ${components.notification.render(store.notification)}
+    ${components.nav.render(store.nav)}
+    ${components.main.render(state)}
+    ${components.footer.render(store.footer)}
   `;
 
   router.updatePageLinks();
 }
 
-function runComponentHook(hookName, match, done = null) {
+async function runComponentHook(hookName, match, done = null) {
   // Check if data is null, view property exists, if not set view equal to "home"
   // using optional chaining (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
   const view = match?.data?.view ? camelCase(match.data.view) : "home";
 
   try {
     if (hookName === 'beforeHook') {
-      header.beforeHook(done, match);
-      nav.beforeHook(done, match);
-      main.beforeHook(done, match);
-      footer.beforeHook(done, match);
-      notification.beforeHook(done, match);
+      await header.beforeHook(done, match);
+      await nav.beforeHook(done, match);
+      await main.beforeHook(done, match);
+      await footer.beforeHook(done, match);
+      await notification.beforeHook(done, match);
 
-      views[view].beforeHook(done, match);
+      // hookComponents.forEach(async componentName => {
+      //   await components[componentName].beforeHook(done, match);
+      // });
+
+      await views[view].beforeHook(done, match);
     } else {
-      header[hookName](match);
-      nav[hookName](match);
-      main[hookName](match);
-      footer[hookName](match);
-      notification[hookName](match);
+      // await header[hookName](match);
+      // await nav[hookName](match);
+      // await main[hookName](match);
+      // await footer[hookName](match);
+      // await notification[hookName](match);
 
-      views[view][hookName](match);
+      hookComponents.forEach(async componentName => {
+        await components[componentName][hookName](match);
+      });
+
+      await views[view][hookName](match);
     }
   } catch (error) {
     console.error(error);
