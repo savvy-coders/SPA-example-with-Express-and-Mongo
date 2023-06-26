@@ -6,9 +6,9 @@ import { capitalize } from "lodash";
 
 let PIZZA_PLACE_API_URL;
 
-if (process.env.PIZZA_PLACE_API_URL) {
+if (import.meta.env.VITE_PIZZA_PLACE_API_URL) {
   PIZZA_PLACE_API_URL =
-    process.env.PIZZA_PLACE_API_URL || "http://localhost:4040";
+  import.meta.env.VITE_PIZZA_PLACE_API_URL || "http://localhost:4040";
 } else {
   console.error(
     "Please create the .env file with a value for PIZZA_PLACE_API_URL"
@@ -82,35 +82,35 @@ router.hooks({
 
     // Add a switch case statement to handle multiple routes
     switch (view) {
-      case "Home": {
-        axios
-          .get(
-            `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}4&q=st%20louis`
-          )
-          .then((response) => {
-            const kelvinToFahrenheit = (kelvinTemp) =>
-              Math.round((kelvinTemp - 273.15) * (9 / 5) + 32);
+      // case "Home": {
+      //   axios
+      //     .get(
+      //       `https://api.openweathermap.org/data/2.5/weather?appid=${import.meta.env.VITE_OPEN_WEATHER_MAP_API_KEY}4&q=st%20louis`
+      //     )
+      //     .then((response) => {
+      //       const kelvinToFahrenheit = (kelvinTemp) =>
+      //         Math.round((kelvinTemp - 273.15) * (9 / 5) + 32);
 
-            store.Home.weather = {};
-            store.Home.weather.city = response.data.name;
-            store.Home.weather.temp = kelvinToFahrenheit(
-              response.data.main.temp
-            );
-            store.Home.weather.feelsLike = kelvinToFahrenheit(
-              response.data.main.feels_like
-            );
-            store.Home.weather.description = response.data.weather[0].main;
-            done();
-          })
-          .catch((err) => {
-            console.log(err);
-            done();
-          });
-        break;
-      }
+      //       store.Home.weather = {};
+      //       store.Home.weather.city = response.data.name;
+      //       store.Home.weather.temp = kelvinToFahrenheit(
+      //         response.data.main.temp
+      //       );
+      //       store.Home.weather.feelsLike = kelvinToFahrenheit(
+      //         response.data.main.feels_like
+      //       );
+      //       store.Home.weather.description = response.data.weather[0].main;
+      //       done();
+      //     })
+      //     .catch((err) => {
+      //       console.log(err);
+      //       done();
+      //     });
+      //   break;
+      // }
       case "Pizza": {
         axios
-          .get(`${process.env.PIZZA_PLACE_API_URL}/pizzas`)
+          .get(`${import.meta.env.VITE_PIZZA_PLACE_API_URL}/pizzas`)
           .then((response) => {
             store.Pizza.pizzas = response.data;
             done();
@@ -138,7 +138,7 @@ router
     "/": () => render(),
     ":view": (params) => {
       let view = capitalize(params.data.view);
-      if (store.hasOwnProperty(view)) {
+      if ("view" in store) {
         render(store[view]);
       } else {
         render(store.Viewnotfound);
