@@ -1,20 +1,21 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-const pizzas = require("./controllers/pizzas");
-const orders = require("./controllers/orders");
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import pizzas from "./routers/pizzas.js";
+import orders from "./routers/orders.js";
+import customers from "./routers/customers.js";
 
 dotenv.config();
 
 const app = express();
 
-// Middleware
+// Logging Middleware Declaration
 const logging = (request, response, next) => {
   console.log(`${request.method} ${request.url} ${Date.now()}`);
   next();
 };
 
-// CORS Middleware
+// CORS Middleware Declaration
 const cors = (req, res, next) => {
   res.setHeader(
     "Access-Control-Allow-Headers",
@@ -29,12 +30,13 @@ const cors = (req, res, next) => {
   next();
 };
 
+// Use the defined Middleward
 app.use(cors);
 app.use(express.json());
 
 const MONGODB = process.env.MONGODB || "mongodb://localhost/pizza";
 
-// Database stuff
+// Database connection
 mongoose.connect(
   MONGODB,
   { 
@@ -52,39 +54,19 @@ db.once(
   console.log.bind(console, "Successfully opened connection to Mongo!")
 );
 
-app.route("/").get((request, response) => {
-  response.send("HELLO WORLD");
-});
 
+// Define a status route
 app.get("/status", (request, response) => {
   response.send(JSON.stringify({ message: "Service running ok" }));
 });
 
-app
-  .route("/posts")
-  .get((request, response) => {
-    // express adds a "params" Object to requests
-    const id = request.params.id;
-    let data = "The ID equals " + id;
-    // handle GET request for post with an id of "id"
-    if (request.query) {
-      if (request.query.type) {
-        if (request.query.type === "json") {
-          data = { id: request.params.id, q: request.query };
-        }
-      }
-    }
-    response.status(418).json(data);
-  })
-  .post((request, response) => {
-    response.json(request);
-  });
-
-// Moving the logging here so that the logs on render.com are not filled up with status checks
+// Moving the logging middleware to this location so that the logs on render.com are not filled up with status checks
 app.use(logging);
 
+// Use the routers
 app.use("/pizzas", pizzas);
 app.use("/orders", orders);
+app.use("/customers", customers);
 
 const PORT = process.env.PORT || 4040;
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));

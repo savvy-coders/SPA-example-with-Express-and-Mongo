@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const deliverySchema = new mongoose.Schema({
   time: String,
@@ -7,7 +7,4 @@ const deliverySchema = new mongoose.Schema({
 
 const Delivery = mongoose.model("Delivery", deliverySchema);
 
-module.exports = {
-  model: Delivery,
-  schema: deliverySchema
-};
+export default Delivery;

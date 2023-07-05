@@ -2,6 +2,7 @@
   "name": "savvy-starter",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "scripts": {
     "parcel-build": "parcel build index.html && cp _redirects ./dist/",
     "serve": "parcel index.html",
@@ -18,19 +19,18 @@
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
     "nodemon": "^2.0.6",
+    "parcel": "^2.9.1",
     "path-browserify": "^1.0.1",
     "prettier": "1.19.1",
     "process": "^0.11.10"
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "body-parser": "^1.19.0",
     "dotenv": "^5.0.1",
     "express": "^4.17.1",
     "html-literal": "^1.1.0",
     "lodash": "^4.17.20",
-    "mongoose": "^5.11.8",
-    "navigo": "^8.1.2",
-    "parcel": "^2.0.1"
+    "mongoose": "^7.2.2",
+    "navigo": "^8.1.2"
   }
 }
