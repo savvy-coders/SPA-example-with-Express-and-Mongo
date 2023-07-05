@@ -14,14 +14,14 @@ router.post("/", async (request, response) => {
     // Create the Order so that it can be populated
     const newOrder = new Order({});
 
-    // Create and save the customer document in a seperate collection if it doesn't already exist
+    // Create and save the customer document in a separate collection if it doesn't already exist
     let customer = await Customer.exists({_id: body.customer});
     if (customer === null) {
       customer = new Customer(body.customer);
       await customer.save();  
     }
 
-    // Create and save the pizza documents in a seperate collection
+    // Create and save the pizza documents in a separate collection
     let pizzaIds = [];
     for (const pizza of body.pizzas) {
       // Add the order ID and customer ID to each pizza for cross reference purposes
@@ -38,7 +38,7 @@ router.post("/", async (request, response) => {
     newOrder.notes = body.notes;
     newOrder.status = body.status;
 
-    // Create and save the order document in a seperate collection
+    // Create and save the order document in a separate collection
     const data = await newOrder.save();
     
     response.json(data);

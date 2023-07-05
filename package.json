@@ -6,7 +6,9 @@
   "scripts": {
     "parcel-build": "parcel build index.html && cp _redirects ./dist/",
     "serve": "parcel index.html",
-    "app:watch": "nodemon --watch ./server -e js server/app.js"
+    "app:watch": "nodemon --watch ./server -e js server/app.js",
+    "test:frontend": "npx cypress open",
+    "test:backend": "npx jasmine"
   },
   "keywords": [],
   "author": "",
@@ -15,14 +17,26 @@
     "since 2017-06"
   ],
   "devDependencies": {
+    "assert": "^2.0.0",
+    "browserify-zlib": "^0.2.0",
+    "crypto-browserify": "^3.12.0",
+    "cypress": "^12.16.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "events": "^3.3.0",
+    "jasmine": "^5.0.2",
     "nodemon": "^2.0.6",
     "parcel": "^2.9.1",
     "path-browserify": "^1.0.1",
     "prettier": "1.19.1",
-    "process": "^0.11.10"
+    "process": "^0.11.10",
+    "punycode": "^1.4.1",
+    "querystring-es3": "^0.2.1",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "url": "^0.11.1",
+    "util": "^0.12.5"
   },
   "dependencies": {
     "axios": "^0.21.1",
