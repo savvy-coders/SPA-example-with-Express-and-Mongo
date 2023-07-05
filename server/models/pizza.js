@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import mongoose from "mongoose";
 
 const pizzaSchema = new mongoose.Schema({
   customer: {
@@ -22,12 +21,9 @@ const pizzaSchema = new mongoose.Schema({
     validate: /^[A-Za-z0-9 ]*$/
   },
   toppings: [String],
-  order: { type: Schema.Types.ObjectId, ref: "Order" }
+  order: { type: mongoose.Schema.Types.ObjectId, ref: "Order" }
 });
 
 const Pizza = mongoose.model("Pizza", pizzaSchema);
 
-module.exports = {
-  model: Pizza,
-  schema: pizzaSchema
-};
+export default Pizza;

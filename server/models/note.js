@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const noteSchema = new mongoose.Schema({
   timestamp: String, // Could be Date as well, but used String to reduce complexity, not recommended
@@ -7,7 +7,4 @@ const noteSchema = new mongoose.Schema({
 
 const Note = mongoose.model("Note", noteSchema);
 
-module.exports = {
-  model: Note,
-  schema: noteSchema
-};
+export default Note;
