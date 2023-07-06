@@ -1,9 +1,12 @@
 describe('Verify primary site functionality', () => {
-  it('validates all primary functionality of home, bio, Pizza, and Order views', () => {
+  it('validates all primary functionality of home view', () => {
     // land on homepage
     cy.visit('http://localhost:1234');
     // check that the Call to Action button appears to be functional
     cy.get('#jumbotron > a').should('not.be.disabled');
+  });
+
+  it('validates all primary functionality of bio view', () => {
     // click on the Bio link
     cy.get('.hidden--mobile > :nth-child(2) > a').click();
     // verify headings
@@ -11,10 +14,17 @@ describe('Verify primary site functionality', () => {
     cy.get('h2').should('contain', 'Vivamus ac justo eu nisi');
     // verify image
     cy.get('img').should('be.visible').and('have.attr', 'src');
+  });
+
+  
+  it('verifies link to homepage works', () => {
     // click on Home link
     cy.get(':nth-child(1) > a').click();
     // verify Home heading
     cy.get('h1').should('contain', 'My home page')
+  });
+
+    it('validates all primary functionality of Pizza! view', () => {
     // click on the Pizza! link
     cy.intercept('GET', '/pizzas').as('delivery');
     cy.get(':nth-child(3) > a').click();
@@ -28,7 +38,10 @@ describe('Verify primary site functionality', () => {
         expect(za[0].children[0].children[0].innerText).include('Toppings' );
         expect(za[0].children[0].children[0].innerText).include('Customer' );
       })
-    })
+    });
+  });
+
+  it('validates all primary functionality of order view', () => {
     // click on the Order view link
     cy.get('.hidden--mobile > :nth-child(4) > a').click();
     // fill out form fields
@@ -58,13 +71,13 @@ describe('Verify primary site functionality', () => {
         expect(zaTable[0].lastChild.lastElementChild.innerText).include(respDetail.cheese)
         expect(zaTable[0].lastChild.lastElementChild.innerText).include(respDetail.sauce)
         expect(zaTable[0].lastChild.lastElementChild.innerText).include(respDetail.toppings)
-      })
-    })
+      });
+    });
     // double check the header on this Pizza view as well
     cy.get('h1').should('contain', 'List of Pizzas');
     // check footer displays as intended
     cy.scrollTo('bottom');
     cy.get('footer > a').should('contain', 'Savvy Coders')
     cy.get('footer').should('contain', '2023');
-  })
-})
+  });
+});
