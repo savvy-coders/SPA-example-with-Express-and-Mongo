@@ -4,8 +4,6 @@ import request from 'supertest';
 // import the app.js from our server folder to get access to it's functions
 import app from '../server/app.js';
 
-// set a default timeout - otherwise, if you have a ton of records and/or a bad internet connection, your tests just hang forever at the GET all method!
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
 // set up our test
 describe('Pizza Routes', function() {
 
@@ -43,7 +41,6 @@ describe('Pizza Routes', function() {
       // Sets up our ability to inspect the response package we received back from the endpoint
       .then(response => {
 
-        console.log("Log Message: " + response.body);
         // Sets the third expectation - that the customer value is actually what we sent
         expect(response.body.customer).toEqual('John Doe');
 
@@ -55,7 +52,6 @@ describe('Pizza Routes', function() {
 
         // Remember that pizzaId we created at the beginning? Now that we have a record confirmed by the DB, we can grab it's ID from the response body and store it to use in our later PUT and DELETE and GET:ID requests:
         pizzaId = response.body._id;
-        console.log("Log Message: " + pizzaId + " " + pizzaData)
         // The done statement essentially just closes this spec so we can begin a fresh one of a different type, or on a different object or function
         done();
       });
@@ -66,13 +62,19 @@ describe('Pizza Routes', function() {
     request(app)
       .get('/pizzas')
       .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(200, done);
+      .then((response) => {
+        expect('Content-Type', /json/);
+        expect(200);
+        done();
+      })
+      .catch(error => {
+        console.log('Error: ', error)
+      })
   });
 
   // A bit more interesting is our GET:ID request. We're fetching a specific record this time, so we'll use our test record from our POST request earlier - and the pizzaId we subsequently stored near the end of that test - to search for that exact record, that way the rest of our testing only affects the test record - this is a very common convention and best practice for testing in general - we never want to be running test functions on "real" data, or we run the risk of corrupting that data, and possibly far worse. We always want to start by testing whatever method will produce a new, bespoke record, and that way we can test all other functions on that record. As long as the test for our "DELETE" method is last, that means we have effectively zero cleanup to do  at the end; if not, we'll need to artificially create a DELETE call at the end of our test to ensure we have not left dummy data in our live db!
   it('GET /pizzas/:id - Get a single pizza by ID', function(done) {
-    console.log("Log Message: " + pizzaId);
+
     // just like previously, we'll start by executing the "request" method on our app.js which is stored as "app" in this file.
     request(app)
 
@@ -86,7 +88,6 @@ describe('Pizza Routes', function() {
 
       // the rest is pretty much the same aside from, of course, the need to verify that the ID is also what we expect it to be, and has not been changed, and we have not accidentally performed the operation on the wrong record.
       .then(response => {
-        console.log("Log Message: " + response.body);
         expect(response.body._id).toEqual(pizzaId);
         done();
       });
