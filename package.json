@@ -15,6 +15,7 @@
     "since 2017-06"
   ],
   "devDependencies": {
+    "buffer": "^6.0.3",
     "eslint": "^8",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.3.1",
@@ -26,6 +27,7 @@
   },
   "dependencies": {
     "axios": "^1.4.0",
+    "Buffer": "npm:buffer@^6.0.3",
     "dotenv": "^5.0.1",
     "express": "^4.17.1",
     "html-literal": "^1.1.0",
