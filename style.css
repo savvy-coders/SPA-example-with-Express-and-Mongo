@@ -17,23 +17,6 @@ header > h1 {
   height: 90vh;
 }
 
-#jumbotron > h2 {
-  color: white;
-  text-align: center;
-}
-
-#jumbotron > a {
-  text-decoration: none;
-  background-color: white;
-  font-size: 1.5em;
-  padding: 1.5rem;
-  border-radius: 10px;
-}
-
-#jumbotron > a:hover {
-  background-color: rgba(255, 255, 255, 0.6);
-}
-
 dialog {
   position: relative;
   border-radius: 10px;
@@ -59,95 +42,8 @@ dialog > pre {
   color: #ff3e2c;
 }
 
-
-/* === about-me === */
-
-#about-me {
-  margin: 1rem;
-}
-
-#about-me > h2 {
-  color: darkblue;
-  font-size: xx-large;
-}
-
-#about-me img {
-  border-radius: 75px;
-  max-height: 500px;
-}
-
-#bioFluff > p {
-  margin: 1rem;
-  font-size: 1.3rem;
-}
-
-
-/* === PIZZAS === */
-
-#pizzas {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1.2em;
-  height: auto;
-  width: 92.5%;
-  margin: 20px auto;
-  border: 1px solid black;
-  padding: 10px;
-}
-
-#pizzaTable{
-  min-height: 100px;
-  border: 1px solid black;
-}
-
-#pizzas tbody {
-  width: 100%;
-}
-
-#pizzas th {
-  text-align: left;
-}
-
-#pizzas td,th {
-  width: 25%;
-}
-
-/* === Order Form === */
-
-#order > h2 {
-  color: green;
-}
-
-form {
-  border: solid 1px black;
-  display: flex;
-  flex-direction: column;
-  margin: 1rem 1rem;
-}
-
-form > * {
-  margin: 0.5rem;
-}
-
-.topping-label {
-  margin-right: 0.25rem;
-}
-
-form > input[type="submit"] {
-  width: 40%;
-  margin: 0.5rem;
-  margin-right: auto;
-}
-
-/* === FOOTER === */
-
-footer {
-  border-top: solid 1px black;
-  padding: 2rem 2rem 4rem;
-  margin: 1rem 1rem;
-}
-
-.topping-list li {
-  list-style: none;
+.text-center {
+  text-align: center;
 }
 
 @media (max-width: 549px){
@@ -182,10 +78,6 @@ footer {
     width: 40%;
     height: auto;
     margin-left: 30%;
-  }
-
-  #pizzaTable{
-    margin: 15px;
   }
 }
 
@@ -225,9 +117,5 @@ footer {
     width: 25%;
     height: auto;
     margin-right: 1rem;
-  }
-
-  #pizzaTable{
-    margin: 15px;
   }
 }

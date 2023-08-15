@@ -1,4 +1,5 @@
 import html from "html-literal";
+import '../assets/css/views/home.css';
 
 export default (state) => html`
   <h3 id="weather">
