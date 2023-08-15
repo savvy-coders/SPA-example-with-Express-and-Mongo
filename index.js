@@ -87,7 +87,11 @@ function afterRender(state) {
                     store.notification.type = "error";
                     store.notification.visible = true;
                     store.notification.message = "Error retrieving pizzas";
+<<<<<<< HEAD
 
+=======
+          
+>>>>>>> 8e23992653991c44d15b37119489142fcddf58dc
                     router.navigate('/pizza');
                   });
               })
@@ -97,7 +101,11 @@ function afterRender(state) {
                 store.notification.type = "error";
                 store.notification.visible = true;
                 store.notification.message = "Error deleting pizza";
+<<<<<<< HEAD
 
+=======
+      
+>>>>>>> 8e23992653991c44d15b37119489142fcddf58dc
                 router.navigate('/pizza');
               })
           }
@@ -130,6 +138,11 @@ function afterRender(state) {
       axios
         .post(`${PIZZA_PLACE_API_URL}/pizzas`, requestData)
         .then(response => {
+<<<<<<< HEAD
+=======
+          // Push the new pizza to the store so we don't have to reload from the API
+          store.pizza.pizzas.push(response.data);
+>>>>>>> 8e23992653991c44d15b37119489142fcddf58dc
           router.navigate("/pizza");
         })
         .catch(error => {
