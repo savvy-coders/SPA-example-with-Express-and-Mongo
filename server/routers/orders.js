@@ -14,14 +14,14 @@ router.post("/", async (request, response) => {
     // Create the Order so that it can be populated
     const newOrder = new Order({});
 
-    // Create and save the customer document in a seperate collection if it doesn't already exist
+    // Create and save the customer document in a separate collection if it doesn't already exist
     let customer = await Customer.exists({_id: body.customer});
     if (customer === null) {
       customer = new Customer(body.customer);
       await customer.save();  
     }
 
-    // Create and save the pizza documents in a seperate collection
+    // Create and save the pizza documents in a separate collection
     let pizzaIds = [];
     for (const pizza of body.pizzas) {
       // Add the order ID and customer ID to each pizza for cross reference purposes
@@ -38,12 +38,12 @@ router.post("/", async (request, response) => {
     newOrder.notes = body.notes;
     newOrder.status = body.status;
 
-    // Create and save the order document in a seperate collection
+    // Create and save the order document in a separate collection
     const data = await newOrder.save();
     
     response.json(data);
   } catch(error) {
-    // Output error to the console incase it fails to send in response
+    // Output error to the console in case it fails to send in response
     console.log(error);
     if ('name' in error && error.name === 'ValidationError') return response.status(400).json(error.errors);
     
@@ -71,7 +71,7 @@ router.get("/", async (request, response) => {
 
       response.json(data);
   } catch(error) {
-    // Output error to the console incase it fails to send in response
+    // Output error to the console in case it fails to send in response
     console.log(error);
 
     response.status(500).json(error.errors);
@@ -99,7 +99,7 @@ router.get("/:id", async (request, response) => {
       
       response.json(data);
   } catch(error) {
-    // Output error to the console incase it fails to send in response
+    // Output error to the console in case it fails to send in response
     console.log(error);
 
     response.status(500).json(error.errors);
@@ -126,7 +126,7 @@ router.delete("/:id", async (request, response) => {
 
     response.json(data);
   } catch(error) {
-    // Output error to the console incase it fails to send in response
+    // Output error to the console in case it fails to send in response
     console.log(error);
 
     response.sendStatus(500).json(error);
@@ -169,7 +169,7 @@ router.put("/:id", async (request, response) => {
     
     response.json(data);
   } catch(error) {
-    // Output error to the console incase it fails to send in response
+    // Output error to the console in case it fails to send in response
     console.log(error);
     if ('name' in error && error.name === 'ValidationError') return response.status(400).json(error.errors);
     

@@ -4,6 +4,16 @@ export default () => html`
   <form id="order" method="POST" action="">
     <h2>Order a pizza</h2>
     <div>
+      <label for="customer">Customer Name:</label>
+      <input
+        type="text"
+        name="customer"
+        id="customer"
+        placeholder="Enter Name"
+        required
+      />
+    </div>
+    <div>
       <label for="crust">Crust:</label>
       <select id="crust" name="crust">
         <option value="">Select a Crust</option>
@@ -77,12 +87,6 @@ export default () => html`
       />
       <label for="top5">Red Pepper</label>
     </div>
-    <input
-        type="hidden"
-        name="customer"
-        id="customer"
-        value="<Your Name>"
-      />
     <input type="submit" name="submit" value="Submit Pizza" />
   </form>
 `;

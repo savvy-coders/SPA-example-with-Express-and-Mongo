@@ -12,7 +12,7 @@ router.post("/", async (request, response) => {
 
     response.json(data);
   } catch(error) {
-    // Output error to the console incase it fails to send in response
+    // Output error to the console in case it fails to send in response
     console.log(error);
     
     if ('name' in error && error.name === 'ValidationError') return response.status(400).json(error.errors);
@@ -31,7 +31,7 @@ router.get("/", async (request, response) => {
 
     response.json(data);
   } catch(error) {
-    // Output error to the console incase it fails to send in response
+    // Output error to the console in case it fails to send in response
     console.log(error);
 
     return response.status(500).json(error.errors);
@@ -45,7 +45,7 @@ router.get("/:id", async (request, response) => {
 
     response.json(data);
   } catch(error) {
-    // Output error to the console incase it fails to send in response
+    // Output error to the console in case it fails to send in response
     console.log(error);
 
     return response.status(500).json(error.errors)
@@ -74,7 +74,7 @@ router.put("/:id", async (request, response) => {
 
     response.json(data);
   } catch(error) {
-    // Output error to the console incase it fails to send in response
+    // Output error to the console in case it fails to send in response
     console.log(error);
 
     if ('name' in error && error.name === 'ValidationError') return response.status(400).json(error.errors);
@@ -90,7 +90,7 @@ router.delete("/:id", async (request, response) => {
 
     response.json(data);
   } catch(error) {
-    // Output error to the console incase it fails to send in response
+    // Output error to the console in case it fails to send in response
     console.log(error);
 
     return response.status(500).json(error.errors);
