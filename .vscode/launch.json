@@ -13,16 +13,16 @@
         ],
         "type": "node"
       },
-        {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Launch Chrome w/Parcel",
-            "url": "http://localhost:1234",
-            "webRoot": "${workspaceFolder}",
-            "breakOnLoad": true,
-            "sourceMapPathOverrides": {
-              "/__parcel_source_root/*": "${webRoot}/*"
-            }
+      {
+        "type": "chrome",
+        "request": "launch",
+        "name": "Launch Chrome w/Parcel",
+        "url": "http://localhost:1234",
+        "webRoot": "${workspaceFolder}",
+        "breakOnLoad": true,
+        "sourceMapPathOverrides": {
+          "/__parcel_source_root/": "${webRoot}/"
+        }
       }
     ]
 }
