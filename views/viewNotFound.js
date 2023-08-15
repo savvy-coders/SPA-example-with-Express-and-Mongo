@@ -2,7 +2,7 @@ import html from "html-literal";
 import "../assets/css/views/viewNotFound.css";
 import * as images from "../assets/img/";
 
-export default (state) => html`
+export default () => html`
   <div id="oops404">
     <img src="${images.oops404}" alt="View not found!">
     <div class="attribution">
