@@ -1,10 +1,16 @@
 import html from "html-literal";
-import dogPic from "../assets/img/dog-with-flower.jpg";
+import "../assets/css/views/aboutMe.css";
+/*
+  Import an image directly from assets/img folder
+  import dogPic from "../assets/img/dog-with-flower.jpg";
+*/
+// Import all images using the aggregator
+import * as images from "../assets/img/";
 
 export default state => html`
   <section id="about-me">
     <h2>Vivamus ac justo eu nisi</h2>
-    <img src="${dogPic}" alt="me" />
+    <img src="${images.dogWithFlower}" alt="me" />
     <h3>Dynamic paragraph loaded from state</h3>
     <p>${state.paragraph}</p>
     <hr>
