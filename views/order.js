@@ -1,5 +1,6 @@
 import html from "html-literal";
 import { kebabCase } from "lodash";
+import "../assets/css/views/order.css"
 
 export default state => html`
   <form id="order" method="POST" action="">

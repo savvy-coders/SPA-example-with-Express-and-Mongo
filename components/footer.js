@@ -1,4 +1,5 @@
 import html from "html-literal";
+import "../assets/css/components/footer.css";
 
 let year = new Date().getFullYear();
 

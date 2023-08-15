@@ -1,8 +1,16 @@
 import html from "html-literal";
+import "../assets/css/views/pizza.css"
 
 export default state => html`
 <table id="pizzas">
-<tr><th>Crust</th><th>Cheese</th><th>Sauce</th><th>Toppings</th><th>Customer</th><th>Actions</th></tr>
+<thead>
+  <th>Crust</th>
+  <th>Cheese</th>
+  <th>Sauce</th>
+  <th>Toppings</th>
+  <th>Customer</th>
+  <th id="action-column">Actions</th>
+</thead>
 ${state.pizzas
   .map(pizza => {
     return `<tr>
@@ -11,7 +19,7 @@ ${state.pizzas
     <td>${pizza.sauce}</td>
     <td>${pizza.toppings.join(" & ")}</td>
     <td>${pizza.customer}</td>
-    <td><button class="delete-button" data-id="${pizza._id}">Delete</button></td>
+    <td class="text-center"><button class="delete-button" data-id="${pizza._id}">Delete</button></td>
     </tr>`;
   })
   .join("")}
