@@ -11,33 +11,21 @@ export default state => html`
     </div>
     <div>
       <label for="crust">Crust:</label>
-      <select id="crust" name="crust">
+      <select id="crust" name="crust" required>
         <option value="">Select a Crust</option>
-        <option value="thin">Thin</option>
-        <option value="chicago">Chicago</option>
-        <option value="deep-dish">Deep Dish</option>
-        <option value="hella-thick">Hella Thick</option>
+        <option value="Thin">Thin</option>
+        <option value="Hand Tossed">Hand Tossed</option>
+        <option value="Chicago">Chicago</option>
+        <option value="Deep Dish">Deep Dish</option>
       </select>
     </div>
     <div>
       <label for="cheese">Cheese:</label>
-      <input
-        type="text"
-        name="cheese"
-        id="cheese"
-        placeholder="Enter Cheese"
-        required
-      />
+      <input type="text" name="cheese" id="cheese" placeholder="Enter Cheese" required />
     </div>
     <div>
       <label for="sauce">Sauce:</label>
-      <input
-        type="text"
-        name="sauce"
-        id="sauce"
-        placeholder="Enter Sauce"
-        required
-      />
+      <input type="text" name="sauce" id="sauce" placeholder="Enter Sauce" required />
     </div>
     <div>
       <label for="toppings">Toppings:</label>
@@ -53,7 +41,6 @@ export default state => html`
           <label for="${id}" class="topping-label">${topping}</label></li>`
         }).join("")}
       </ul>
-
     </div>
     <input type="submit" name="submit" value="Submit Pizza" />
   </form>
