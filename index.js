@@ -63,7 +63,6 @@ function afterRender(state) {
       axios
         .post(`${PIZZA_PLACE_API_URL}/pizzas`, requestData)
         .then(response => {
-          console.log(response.data);
           store.Pizza.pizzas.push(response.data);
           router.navigate("/Pizza");
         })
