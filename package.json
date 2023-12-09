@@ -9,7 +9,7 @@
     "app:watch": "nodemon --watch ./server -e js server/app.js",
     "be:test": "npx jasmine",
     "fe:test": "npx cypress run"
-    },
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -25,7 +25,7 @@
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
     "events": "^3.3.0",
-    "jasmine": "^5.0.2",
+    "jasmine": "^5.1.0",
     "nodemon": "^2.0.6",
     "parcel": "^2.9.1",
     "path-browserify": "^1.0.1",
