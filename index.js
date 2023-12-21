@@ -53,7 +53,7 @@ router.hooks({
     updateNotification();
 
     if (view in views) {
-      await views["home"].hooks.before(done, match);
+      await views[view].hooks.before(done, match);
     } else {
       done();
     }
