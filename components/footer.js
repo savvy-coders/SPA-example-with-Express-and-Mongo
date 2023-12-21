@@ -1,10 +1,14 @@
 import html from "html-literal";
 import "../assets/css/components/footer.css";
 
-let year = new Date().getFullYear();
+function render() {
+  return html`
+    <footer>
+      &copy;${new Date().getFullYear()} <a href="https://savvycoders.com/">Savvy Coders</a>
+    </footer>
+  `;
+}
 
-export default () => html`
-  <footer>
-    &copy;${year} <a href="https://savvycoders.com/">Savvy Coders</a>
-  </footer>
-`;
+export default {
+  render
+}
