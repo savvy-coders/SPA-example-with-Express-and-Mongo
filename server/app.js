@@ -2,7 +2,6 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import pizzas from "./routers/pizzas.js";
-import orders from "./routers/orders.js";
 import customers from "./routers/customers.js";
 
 dotenv.config();
@@ -65,7 +64,6 @@ app.use(logging);
 
 // Use the routers
 app.use("/pizzas", pizzas);
-app.use("/orders", orders);
 app.use("/customers", customers);
 
 const PORT = process.env.PORT || 4040;

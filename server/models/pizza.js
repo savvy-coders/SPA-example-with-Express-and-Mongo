@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 const pizzaSchema = new mongoose.Schema({
   customer: {
-    type: String,
-    required: true,
-    validate: /^[A-Za-z0-9 ]*$/
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Customer",
+    required: true
   },
   crust: {
     type: String,
@@ -20,8 +20,7 @@ const pizzaSchema = new mongoose.Schema({
     required: true,
     validate: /^[A-Za-z0-9 ]*$/
   },
-  toppings: [String],
-  order: { type: mongoose.Schema.Types.ObjectId, ref: "Order" }
+  toppings: [String]
 });
 
 const Pizza = mongoose.model("Pizza", pizzaSchema);
