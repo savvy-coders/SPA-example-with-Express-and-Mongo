@@ -7,7 +7,7 @@ import "../assets/css/views/aboutMe.css";
 // Import all images using the aggregator
 import * as images from "../assets/img/";
 
-function render(state) {
+export default state => {
   return html`
     <section id="about-me">
       <h2>Vivamus ac justo eu nisi</h2>
@@ -43,19 +43,4 @@ function render(state) {
       </p>
     </section>
   `;
-}
-
-const hooks = {
-  before: async (done, match) => {
-    const {data, params} = match;
-
-  },
-  after: async (match) => {
-
-  }
-}
-
-export default {
-  render,
-  hooks
 }

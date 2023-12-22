@@ -1,11 +1,8 @@
 import html from "html-literal";
 import { kebabCase } from "lodash";
 import "../assets/css/views/order.css"
-import axios from "axios";
-import * as store from "../store/index.js";
-import router from "../index.js";
 
-function render(state) {
+export default state => {
   return html`
     <form id="order" method="POST" action="">
       <h2>Order a pizza</h2>
@@ -49,56 +46,4 @@ function render(state) {
       <input type="submit" name="submit" value="Submit Pizza"/>
     </form>
   `;
-}
-
-const hooks = {
-  before: async (done, match) => {
-    const {data, params} = match;
-
-  },
-  after: async (match) => {
-    document.querySelector("form").addEventListener("submit", async event => {
-      event.preventDefault();
-
-      const inputList = event.target.elements;
-
-      const toppings = [];
-      for (let input of inputList.toppings) {
-        if (input.checked) {
-          toppings.push(input.value);
-        }
-      }
-
-      const requestData = {
-        crust: inputList.crust.value,
-        cheese: inputList.cheese.value,
-        sauce: inputList.sauce.value,
-        toppings: toppings,
-        customer: inputList.customer.value,
-      };
-
-      await axios
-        .post(`${PIZZA_PLACE_API_URL}/pizzas`, requestData)
-        .then(response => {
-          // Push the new pizza to the store so we don't have to reload from the API
-          store.pizza.pizzas.push(response.data);
-
-          router.navigate("/pizza");
-        })
-        .catch(error => {
-          console.error("Error storing new pizza", error);
-
-          store.notification.type = "error";
-          store.notification.visible = true;
-          store.notification.message = "Error storing new pizza";
-
-          router.navigate('/order');
-        });
-    });
-  }
-}
-
-export default {
-  render,
-  hooks
 }

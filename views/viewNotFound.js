@@ -2,7 +2,7 @@ import html from "html-literal";
 import "../assets/css/views/viewNotFound.css";
 import * as images from "../assets/img/";
 
-function render() {
+export default () => {
   return html`
     <div id="oops404">
       <img src="${images.oops404}" alt="View not found!">
@@ -12,19 +12,4 @@ function render() {
       </div>
     </div>
   `;
-}
-
-const hooks = {
-  before: async (done, match) => {
-    const {data, params} = match;
-
-  },
-  after: async (match) => {
-
-  }
-}
-
-export default {
-  render,
-  hooks
 }

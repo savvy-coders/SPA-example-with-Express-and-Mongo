@@ -1,29 +1,20 @@
 import { header, nav, main, footer, notification } from "./components";
-import * as views from "./views";
+import { home, order, pizza } from "./hooks";
+// Could also be import in bulk similar to the store
+import * as hooks from "./hooks";
 import * as store from "./store";
 import Navigo from "navigo";
 import { camelCase } from "lodash";
-
-let PIZZA_PLACE_API_URL;
-
-if (process.env.PIZZA_PLACE_API_URL) {
-  PIZZA_PLACE_API_URL =
-    process.env.PIZZA_PLACE_API_URL || "http://localhost:4040";
-} else {
-  console.error(
-    "Please create the .env file with a value for PIZZA_PLACE_API_URL"
-  );
-}
 
 const router = new Navigo("/");
 
 function render(state = store.home) {
   document.querySelector("#root").innerHTML = `
-    ${header.render(state)}
-    ${notification.render(store.notification)}
-    ${nav.render(store.nav)}
-    ${main.render(state)}
-    ${footer.render()}
+    ${header(state)}
+    ${notification(store.notification)}
+    ${nav(store.nav)}
+    ${main(state)}
+    ${footer()}
   `;
 
   router.updatePageLinks();
@@ -52,10 +43,22 @@ router.hooks({
 
     updateNotification();
 
-    if (view in views) {
-      await views[view].hooks.before(done, match);
-    } else {
-      done();
+    switch(view) {
+      case "home":
+        home.before(done, match);
+        break;
+      case "pizza":
+        pizza.before(done, match);
+        break;
+      default:
+        done();
+
+      // The above code could simplified if imported in bulk
+      // if (view in hooks && 'before' in hooks[view]) {
+      //   hooks[view].before(done, match);
+      // } else {
+      //   done();
+      // }
     }
   },
   // Runs before a route handler that is already the match is already being visited
@@ -64,11 +67,7 @@ router.hooks({
 
     updateNotification();
 
-    await views[view].hooks.before(done, match);
-
     render(store[view]);
-
-    await views[view].hooks.after(match);
   },
   after: async (match) => {
     const view = match?.data?.view ? camelCase(match.data.view) : "home";
@@ -85,7 +84,17 @@ router.hooks({
       store.notification.showCount = 0;
     });
 
-    await views[view].hooks.after(match);
+    switch(view) {
+      case "home":
+        home.after(match);
+        break;
+      case "pizza":
+        pizza.after(match);
+        break;
+      case "order":
+        order.after(match);
+        break;
+    }
   }
 });
 
