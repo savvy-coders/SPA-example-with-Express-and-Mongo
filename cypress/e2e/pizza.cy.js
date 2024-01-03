@@ -1,13 +1,13 @@
 describe('Verify primary site functionality', () => {
+  beforeEach(()=> {
+    cy.visit('/');
+  })
   it('validates all primary functionality of home view', () => {
-    // land on homepage
-    cy.visit('http://localhost:1234');
     // check that the Call to Action button appears to be functional
     cy.get('#jumbotron > a').should('not.be.disabled');
   });
 
   it('validates all primary functionality of bio view', () => {
-    cy.visit('http://localhost:1234');
     // click on the Bio link
     cy.get('.hidden--mobile > :nth-child(2) > a').click();
     // verify headings
@@ -19,7 +19,6 @@ describe('Verify primary site functionality', () => {
 
   
   it('verifies link to homepage works', () => {
-    cy.visit('http://localhost:1234');
     // click on Home link
     cy.get(':nth-child(1) > a').click();
     // verify Home heading
@@ -27,7 +26,6 @@ describe('Verify primary site functionality', () => {
   });
 
     it('validates all primary functionality of Pizza! view', () => {
-    cy.visit('http://localhost:1234');
     // click on the Pizza! link
     cy.intercept('GET', '/pizzas').as('delivery');
     cy.get(':nth-child(3) > a').click();
@@ -45,7 +43,6 @@ describe('Verify primary site functionality', () => {
   });
 
   it('validates all primary functionality of order view', () => {
-    cy.visit('http://localhost:1234');
     // click on the Order view link
     cy.get('.hidden--mobile > :nth-child(4) > a').click();
     // fill out form fields
@@ -96,14 +93,14 @@ describe('Verify primary site functionality', () => {
           //Here, we send a simple DELETE request using the ".request()" cypress method and using 
           // template literals to add the pizzaId value at the end of our URL, so we're selecting the 
           // correct record to delete.
-          url: `http://localhost:4040/pizzas/${pizzaId}`,
+          url: `/pizzas/${pizzaId}`,
           headers: {
             "Content-Type":"application/json"
           },
 
           // based on our model and routes, we DELETE by sending an empty body to our base 
           // URL+endpoint route+ID to be deleted. In some cases, you'd do this with a colon between 
-          // the route and the ID, like this: 'http://localhost:4040/pizzas:${pizzaId}' or in other cases,
+          // the route and the ID, like this: '/pizzas:${pizzaId}' or in other cases,
           // the id might be passed in the body. Always verify with your API docs what format your endpoint
           // expects before creating these tests as a general rule!
           body: {

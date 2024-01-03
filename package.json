@@ -9,7 +9,7 @@
     "app:watch": "nodemon --watch ./server -e js server/app.js",
     "be:test": "npx jasmine",
     "fe:test": "npx cypress run"
-    },
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -40,7 +40,7 @@
     "util": "^0.12.5"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^1.5.1",
     "dotenv": "^5.0.1",
     "express": "^4.17.1",
     "html-literal": "^1.1.0",

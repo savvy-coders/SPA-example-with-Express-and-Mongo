@@ -1,14 +1,13 @@
-// This is identical to the other Cypress spec file. Once you understand the commentary 
-// from the other file, you can delete that one and run this going forward if so desired.
 
 describe('Verify primary site functionality', () => {
+  beforeEach(()=> {
+    cy.visit('/');
+  })
     it('validates all primary functionality of home view', () => {
-      cy.visit('http://localhost:1234');
       cy.get('#jumbotron > a').should('not.be.disabled');
     });
   
     it('validates all primary functionality of bio view', () => {
-      cy.visit('http://localhost:1234');
       cy.get('.hidden--mobile > :nth-child(2) > a').click();
       cy.get('h1').should('contain', 'About Me');
       cy.get('h2').should('contain', 'Vivamus ac justo eu nisi');
@@ -16,13 +15,11 @@ describe('Verify primary site functionality', () => {
     });
   
     it('verifies link to homepage works', () => {
-      cy.visit('http://localhost:1234');
       cy.get(':nth-child(1) > a').click();
       cy.get('h1').should('contain', 'My home page')
     });
   
     it('validates all primary functionality of Pizza! view', () => {
-      cy.visit('http://localhost:1234');
       cy.intercept('GET', '/pizzas').as('delivery');
       cy.get(':nth-child(3) > a').click();
       cy.wait('@delivery').then(call => {
@@ -38,7 +35,7 @@ describe('Verify primary site functionality', () => {
     });
   
     it('validates all primary functionality of order view', () => {
-      cy.visit('http://localhost:1234');
+      cy.visit('index.html');
       cy.get('.hidden--mobile > :nth-child(4) > a').click();
       cy.get('#customer').type(`Tester Name`);
       cy.get('#crust').select('thin');
@@ -61,7 +58,7 @@ describe('Verify primary site functionality', () => {
         });
         cy.request({
           method: 'DELETE',
-          url: `http://localhost:4040/pizzas/${pizzaId}`,
+          url: `/pizzas/${pizzaId}`,
           headers: {
             "Content-Type":"application/json"
           },
