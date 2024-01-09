@@ -16,7 +16,7 @@ describe("POST /pizzas", () => {
       })
       .expect(200); // Or any other expected HTTP status
 
-    expect(res.body._id).toBeDefined("_id");
+    expect(res.body._id).withContext("_id");
     pizzaId = res.body._id;
 
     const deleteResponse = await request(app)
