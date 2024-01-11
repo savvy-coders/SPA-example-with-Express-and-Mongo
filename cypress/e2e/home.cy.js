@@ -30,7 +30,7 @@ describe("Verify Home View Elements", () => {
 // This test is a great example of how the syntax of Cypress can make it nearly self-documenting!
   it("verifies header content for homepage", () => {
     cy.visit("http://localhost:1234");
-    cy.get("h1").should("have.text", "My home page");
+    cy.get("h1").should("have.text", "My home PAGE");
   });
 //  Same here - it does exactly what it looks like it does!
   it("verifies correct display of jumbotron background", () => {

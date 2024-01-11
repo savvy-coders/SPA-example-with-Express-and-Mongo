@@ -3,7 +3,7 @@ import app from "../server/app.js";
 
 describe("POST /pizzas", () => {
   let pizzaId;
-
+  console.log(pizzaId)
   it("should create a new pizza and return its _id", async () => {
     const res = await request(app)
       .post("/pizzas")
@@ -15,7 +15,6 @@ describe("POST /pizzas", () => {
         toppings: ["chicken", "spinach"],
       })
       .expect(200); // Or any other expected HTTP status
-
     expect(res.body._id).withContext("_id");
     pizzaId = res.body._id;
 
