@@ -1,0 +1,26 @@
+/* === Order Form === */
+
+#order > h2 {
+    color: green;
+}
+
+form {
+    border: solid 1px black;
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 1rem;
+}
+
+form > * {
+    margin: 0.5rem;
+}
+
+.topping-label {
+    margin-right: 0.25rem;
+}
+
+form > input[type="submit"] {
+    width: 40%;
+    margin: 0.5rem;
+    margin-right: auto;
+}
