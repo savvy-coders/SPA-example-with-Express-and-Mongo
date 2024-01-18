@@ -30,7 +30,7 @@ const cors = (req, res, next) => {
   next();
 };
 
-// Use the defined Middleward
+// Use the defined Middleware
 app.use(cors);
 app.use(express.json());
 
@@ -70,3 +70,5 @@ app.use("/customers", customers);
 
 const PORT = process.env.PORT || 4040;
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+
+export default app;
