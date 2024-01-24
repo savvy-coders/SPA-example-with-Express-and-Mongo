@@ -1,17 +1,14 @@
 import html from "html-literal";
+// Example of using a component inside another component
 import navItem from "./navItem.js";
 
-function render(navItems) {
+export default navItems => {
   return html`
     <nav>
       <i class="fas fa-bars"></i>
       <ul class="hidden--mobile nav-links">
-        ${navItems.map(item => navItem.render(item)).join("")}
+        ${navItems.map(item => navItem(item)).join("")}
       </ul>
     </nav>
   `;
-}
-
-export default {
-  render
 }
