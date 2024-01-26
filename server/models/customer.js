@@ -1,7 +1,10 @@
 import mongoose from "mongoose";
 
 const customerSchema = new mongoose.Schema({
-  name: String,
+  name: {
+    type: String,
+    required: true
+  },
   address: String,
   city: String,
   state: String,

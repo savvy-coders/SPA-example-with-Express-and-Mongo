@@ -2,8 +2,6 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import pizzas from "./controllers/pizzas.js";
-import orders from "./controllers/orders.js";
-import customers from "./controllers/customers.js";
 
 dotenv.config();
 
@@ -63,8 +61,6 @@ app.use(logging);
 
 // Use the controllers
 app.use("/pizzas", pizzas);
-app.use("/orders", orders);
-app.use("/customers", customers);
 
 const PORT = process.env.PORT || 4040;
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));

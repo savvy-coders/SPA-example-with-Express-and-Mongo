@@ -114,6 +114,7 @@ router.hooks({
           event.preventDefault();
 
           const inputList = event.target.elements;
+          console.log('matsinet-inputList', inputList);
 
           const toppings = [];
           for (let input of inputList.toppings) {
@@ -127,7 +128,10 @@ router.hooks({
             cheese: inputList.cheese.value,
             sauce: inputList.sauce.value,
             toppings: toppings,
-            customer: inputList.customer.value,
+            customer: {
+              name: inputList['customer-name'].value,
+              postalCode: inputList['customer-postal-code'].value
+            },
           };
 
           await axios
@@ -149,9 +153,10 @@ router.hooks({
         document.querySelectorAll('.delete-button')
           .forEach(domElement => {
             domElement.addEventListener('click', async event => {
-              const id = event.target.dataset.id;
+              const { id, name } = event.target.dataset;
 
-              if (confirm(`Are you sure you want to delete this pizza (${id})`)) {
+
+              if (confirm(`Are you sure you want to delete this pizza for ${name}`)) {
                 await axios
                   .delete(`${process.env.PIZZA_PLACE_API_URL}/pizzas/${id}`)
                   .then(async deleteResponse => {

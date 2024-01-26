@@ -1,14 +1,18 @@
 import html from "html-literal";
-import { kebabCase } from "lodash";
 import "../assets/css/order.css";
+import { toppingInput } from "../components";
 
 export default state => {
   return html`
     <form id="order" method="POST" action="">
       <h2>Order a pizza</h2>
       <div>
-        <label for="customer">Customer Name:</label>
-        <input type="text" name="customer" id="customer" placeholder="Enter Name" required/>
+        <label for="customer-name">Customer Name:</label>
+        <input type="text" name="customer-name" id="customer-name" placeholder="Enter Name" required/>
+      </div>
+      <div>
+        <label for="customer-postal-code">Customer Postal Code:</label>
+        <input type="text" name="customer-postal-code" id="customer-postal-code" placeholder="Enter Postal Code" required/>
       </div>
       <div>
         <label for="crust">Crust:</label>
@@ -32,14 +36,8 @@ export default state => {
         <label for="toppings">Toppings:</label>
         <ul class="topping-list">
           ${state.availableToppings.map(topping => {
-            const id = kebabCase(topping) + `-checkbox`;
-            return html`<li><input
-            type="checkbox"
-            id="${id}"
-            name="toppings"
-            value="${topping}"
-          />
-          <label for="${id}" class="topping-label">${topping}</label></li>`
+            // Example of using a component inside another component
+            return html`<li>${toppingInput(topping)}</li>`
           }).join("")}
         </ul>
       </div>
