@@ -194,8 +194,6 @@ router.hooks({
       .addEventListener("click", () =>
         document.querySelector("nav > ul").classList.toggle("hidden--mobile")
       );
-
-    // await views[view].hooks.after(match);
   }
 });
 
