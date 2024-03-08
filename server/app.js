@@ -32,7 +32,7 @@ const cors = (req, res, next) => {
 app.use(cors);
 app.use(express.json());
 
-const MONGODB = process.env.MONGODB || "mongodb://localhost/pizza";
+const MONGODB = process.env.MONGODB ?? "mongodb://localhost/pizza";
 
 // Database connection
 mongoose.connect(
@@ -62,7 +62,7 @@ app.use(logging);
 // Use the controllers
 app.use("/pizzas", pizzas);
 
-const PORT = process.env.PORT || 4040;
+const PORT = process.env.PORT ?? 4040;
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
 export default app;
