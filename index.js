@@ -7,7 +7,7 @@ import axios from "axios";
 let PIZZA_PLACE_API_URL;
 
 if (process.env.PIZZA_PLACE_API_URL) {
-  PIZZA_PLACE_API_URL = process.env.PIZZA_PLACE_API_URL || "http://localhost:4040";
+  PIZZA_PLACE_API_URL = process.env.PIZZA_PLACE_API_URL ?? "http://localhost:4040";
 } else {
   console.error(
     "Please create the .env file with a value for PIZZA_PLACE_API_URL"
