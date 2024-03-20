@@ -1,6 +1,11 @@
 describe("Pizza API end-to-end testing", () => {
+
+  beforeEach(() => {
+    // we're going to use the "cy.visit" command to navigate to the page we want to test
+    // we're also going to pass in the URL of the page we want to visit
+    cy.visit(`${Cypress.env("ROOT_URL")}/order`);
+  });
   it("verifies page load", () => {
-    cy.visit("http://localhost:1234/Order");
     // by verifying the headings, we can verify the page view is correct
     cy.get("h1").should("have.text", "Order a Pizza");
     // here is a spot where, where the spelling diff unintentional, this test would catch
@@ -11,7 +16,6 @@ describe("Pizza API end-to-end testing", () => {
 
   // now that we're sure we're on the right page, let's ensure the form elements exist, and go ahead and fill them out.
   it("verifies form fields and function", () => {
-    cy.visit("http://localhost:1234/Order");
     cy.get("#customer").type("Bob");
     cy.get("#crust").select("hella-thick");
     cy.get("#cheese").type("Manchego");
