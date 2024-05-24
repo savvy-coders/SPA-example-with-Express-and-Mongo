@@ -9,7 +9,7 @@
     "app:watch": "nodemon --watch ./server -e js server/app.js",
     "be:test": "npx jasmine",
     "fe:test": "npx cypress run"
-    },
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -26,6 +26,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "events": "^3.3.0",
     "jasmine": "^5.0.2",
+    "langchain": "^0.1.36",
     "nodemon": "^2.0.6",
     "parcel": "^2.9.1",
     "path-browserify": "^1.0.1",
@@ -46,6 +47,7 @@
     "html-literal": "^1.1.0",
     "lodash": "^4.17.20",
     "mongoose": "^7.2.2",
-    "navigo": "^8.1.2"
+    "navigo": "^8.1.2",
+    "openai": "^4.40.2"
   }
 }

@@ -4,7 +4,6 @@ import axios from "axios";
 import Navigo from "navigo";
 import { capitalize } from "lodash";
 
-
 let PIZZA_PLACE_API_URL;
 
 if (process.env.PIZZA_PLACE_API_URL) {
@@ -42,7 +41,7 @@ function afterRender(state) {
     );
 
   if (state.view === "Order") {
-    document.querySelector("form").addEventListener("submit", event => {
+    document.getElementById("form").addEventListener("submit", (event) => {
       event.preventDefault();
       const inputList = event.target.elements;
 
@@ -62,11 +61,11 @@ function afterRender(state) {
 
       axios
         .post(`${PIZZA_PLACE_API_URL}/pizzas`, requestData)
-        .then(response => {
+        .then((response) => {
           store.Pizza.pizzas.push(response.data);
           router.navigate("/Pizza");
         })
-        .catch(error => {
+        .catch((error) => {
           console.log("It puked", error);
         });
     });
@@ -76,6 +75,7 @@ function afterRender(state) {
 router.hooks({
   before: (done, params) => {
     let view = "Home";
+    console.log(params);
     if (params && params.data && params.data.view) {
       view = capitalize(params.data.view);
     }
@@ -85,7 +85,7 @@ router.hooks({
       case "Home": {
         axios
           .get(
-            `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}4&q=st%20louis`
+            `https://api.openweathermap.org/data/2.5/weather?appid=${process.env.OPEN_WEATHER_MAP_API_KEY}&q=st%20louis`
           )
           .then((response) => {
             const kelvinToFahrenheit = (kelvinTemp) =>
@@ -110,7 +110,7 @@ router.hooks({
       }
       case "Pizza": {
         axios
-          .get(`${process.env.PIZZA_PLACE_API_URL}/pizzas`)
+          .get(`${PIZZA_PLACE_API_URL}/pizzas`)
           .then((response) => {
             store.Pizza.pizzas = response.data;
             done();
@@ -121,17 +121,107 @@ router.hooks({
           });
         break;
       }
-      default: {
+      case "Chat": {
+        const chatForm = document.getElementById("query-form");
+        if (chatForm) {
+          chatForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const chatId = params.data.id;
+
+            const formData = new FormData(event.target);
+            const requestData = {};
+            formData.forEach((value, key) => {
+              requestData[key] = value;
+            });
+
+            let promise;
+            if (chatId) {
+              promise = axios.put(
+                `${PIZZA_PLACE_API_URL}/chats/${chatId}`,
+                requestData
+              );
+            } else {
+              promise = axios.post(`${PIZZA_PLACE_API_URL}/chats`, requestData);
+            }
+
+            promise
+              .then((response) => {
+                store.Chat.chats.push(response.data);
+                location.reload();
+              })
+              .catch((error) => {
+                console.log("It puked", error);
+              });
+          });
+        }
+
         done();
+        break;
+      }
+
+      default: {
+        if (store.Viewnotfound) {
+          render(store.Viewnotfound);
+        } else {
+          console.log(`View ${view} not defined`);
+        }
+        done();
+        break;
       }
     }
   },
   already: (params) => {
+    console.log(params);
     const view = params && params.data && params.data.view ? capitalize(params.data.view) : "Home";
-
-    render(store[view]);
+    if (store.hasOwnProperty(view)) {
+      render(store[view]);
+    } else {
+      if (store.Viewnotfound) {
+        render(store.Viewnotfound);
+      } else {
+        console.log(`View ${view} not defined`);
+      }
+    }
+  },
+after: (done, params) => {
+  console.log(params);
+  if (params && params.data && params.data.view === "Chat" && params.data.id) {
+    const chatId = params.data.id;
+    const message = store.Chat.messages[store.Chat.messages.length - 1];
+    axios
+      .put(`${PIZZA_PLACE_API_URL}/chats/${chatId}`, {
+        message,
+      })
+      .then((response) => {
+        store.Chat.messages.push(response.data);
+        render(store.Chat);
+        done();
+      })
+      .catch((error) => {
+        console.log("It puked", error);
+        done();
+      });
+  } else if (params && params.data && params.data.view === "Chat" && !params.data.id) {
+    axios
+      .get(`${PIZZA_PLACE_API_URL}/chats`)
+      .then((response) => {
+        store.Chat.chats = response.data;
+        done();
+      })
+      .catch((error) => {
+        console.log("It puked", error);
+        done();
+      });
+  } else {
+    render(store.Home);
   }
+},
+      notfound: () => {
+        render(store.Viewnotfound);
+        done();
+      }
 });
+
 
 router
   .on({
@@ -141,9 +231,26 @@ router
       if (store.hasOwnProperty(view)) {
         render(store[view]);
       } else {
-        render(store.Viewnotfound);
-        console.log(`View ${view} not defined`);
+        if (store.Viewnotfound) {
+          render(store.Viewnotfound);
+        } else {
+          console.log(`View ${view} not defined`);
+        }
+      }
+    },
+    ":view/:id": (params) => {
+      let view = capitalize(params.data.view);
+      if (store.hasOwnProperty(view)) {
+        render(store[view]);
+      } else {
+        if (store.Viewnotfound) {
+          render(store.Viewnotfound);
+        } else {
+          console.log(`View ${view} not defined`);
+        }
       }
     },
   })
   .resolve();
+
+
