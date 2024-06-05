@@ -3,17 +3,10 @@ import * as store from "./store";
 import axios from "axios";
 import Navigo from "navigo";
 import { capitalize } from "lodash";
+import OpenAI from "openai";
 
-let PIZZA_PLACE_API_URL;
-
-if (process.env.PIZZA_PLACE_API_URL) {
-  PIZZA_PLACE_API_URL =
-    process.env.PIZZA_PLACE_API_URL || "http://localhost:4040";
-} else {
-  console.error(
-    "Please create the .env file with a value for PIZZA_PLACE_API_URL"
-  );
-}
+let PIZZA_PLACE_API_URL =
+  process.env.PIZZA_PLACE_API_URL || "http://localhost:4040";
 
 const router = new Navigo("/");
 
@@ -26,19 +19,13 @@ function render(state = store.Home) {
   `;
 
   router.updatePageLinks();
-
   afterRender(state);
 }
 
 function afterRender(state) {
-  // Add to every view
-
-  // add menu toggle to bars icon in nav bar
-  document
-    .querySelector(".fa-bars")
-    .addEventListener("click", () =>
-      document.querySelector("nav > ul").classList.toggle("hidden--mobile")
-    );
+  document.querySelector(".fa-bars").addEventListener("click", () => {
+    document.querySelector("nav > ul").classList.toggle("hidden--mobile");
+  });
 
   if (state.view === "Order") {
     document.getElementById("form").addEventListener("submit", (event) => {
@@ -66,21 +53,88 @@ function afterRender(state) {
           router.navigate("/Pizza");
         })
         .catch((error) => {
-          console.log("It puked", error);
+          console.log("It puked posting or reloading the pizzas path", error);
         });
     });
+  }
+  // another view if statement similar to the previous one
+  // which listens for the submit event on the form in the chat view
+  // and sends the message to the OpenAI API, then sends the
+  // response to the mongoDb Database /chats collection
+  // and then redirects the user to the chat view
+  if (state.view === "Chat") {
+    document
+      .getElementById("query-form")
+      .addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const inputList = event.target.elements;
+        const message = inputList.queryInput.value;
+        const userId = inputList.userIdInput.value;
+        const apiKey = process.env.OPENAI_API_KEY;
+
+        const openai = new OpenAI({
+          apiKey: apiKey,
+          dangerouslyAllowBrowser: true,
+        });
+        const pizzas = store.Pizza.pizzas;
+        const pizzasListed = 
+          pizzas.map((pizza) => ({
+            role: "system",
+            content: `- ${pizza.name}`,
+          }));
+        const messageList = [
+          { role: "system", content: `You're a helpful assistant at a pizza parlor. Here is a list of current orders, please answer questions about them, and stay on task! No discussing topics unrelated to pizza!` },
+          ...pizzasListed,
+          { role: "system", content: `${message}` }
+        ]
+
+        async function main(messages, pizzas) {
+          const completion = await openai.chat.completions.create({
+            messages: messageList,
+            model: "gpt-3.5-turbo"
+          });
+          console.log(`The completion response body is:`);
+          console.log(completion);
+          return completion.choices[0].message.content;
+        }
+
+        // waits for OpenAI's api call to respond, then maps the response into the data
+        // object being sent to the database
+        axios.get(`${PIZZA_PLACE_API_URL}/pizzas`).then((response) => {
+          state.pizzas = response.data;
+          console.log("The pizzas array is now:");
+          console.log(state.pizzas);
+          return state.pizzas;
+        }).then(async () => {
+          await main(message).then((data) => {
+            console.log(`This is the result of the "main" function: ${data}`);
+            const requestData = {
+              userId: userId,
+              message: message,
+              response: data,
+            };
+            axios
+              .post(`${PIZZA_PLACE_API_URL}/chats`, requestData)
+              .then((response) => {
+                console.log(`This is the response from the database: ${response}`);
+                router.navigate("/Chat");
+              })
+              .catch((error) => {
+                console.log("It puked on Axios post to chats endpoint", error);
+              });
+          });
+        })
+      });
   }
 }
 
 router.hooks({
   before: (done, params) => {
     let view = "Home";
-    console.log(params);
     if (params && params.data && params.data.view) {
       view = capitalize(params.data.view);
     }
 
-    // Add a switch case statement to handle multiple routes
     switch (view) {
       case "Home": {
         axios
@@ -91,15 +145,12 @@ router.hooks({
             const kelvinToFahrenheit = (kelvinTemp) =>
               Math.round((kelvinTemp - 273.15) * (9 / 5) + 32);
 
-            store.Home.weather = {};
-            store.Home.weather.city = response.data.name;
-            store.Home.weather.temp = kelvinToFahrenheit(
-              response.data.main.temp
-            );
-            store.Home.weather.feelsLike = kelvinToFahrenheit(
-              response.data.main.feels_like
-            );
-            store.Home.weather.description = response.data.weather[0].main;
+            store.Home.weather = {
+              city: response.data.name,
+              temp: kelvinToFahrenheit(response.data.main.temp),
+              feelsLike: kelvinToFahrenheit(response.data.main.feels_like),
+              description: response.data.weather[0].main,
+            };
             done();
           })
           .catch((err) => {
@@ -116,116 +167,38 @@ router.hooks({
             done();
           })
           .catch((error) => {
-            console.log("It puked", error);
+            console.log("It puked getting the pizzas", error);
             done();
           });
         break;
       }
+
       case "Chat": {
-        const chatForm = document.getElementById("query-form");
-        if (chatForm) {
-          chatForm.addEventListener("submit", (event) => {
-            event.preventDefault();
-            const chatId = params.data.id;
-
-            const formData = new FormData(event.target);
-            const requestData = {};
-            formData.forEach((value, key) => {
-              requestData[key] = value;
-            });
-
-            let promise;
-            if (chatId) {
-              promise = axios.put(
-                `${PIZZA_PLACE_API_URL}/chats/${chatId}`,
-                requestData
-              );
-            } else {
-              promise = axios.post(`${PIZZA_PLACE_API_URL}/chats`, requestData);
-            }
-
-            promise
-              .then((response) => {
-                store.Chat.chats.push(response.data);
-                location.reload();
-              })
-              .catch((error) => {
-                console.log("It puked", error);
-              });
+        axios
+          .get(`${PIZZA_PLACE_API_URL}/chats`)
+          .then((response) => {
+            console.log(`The response data from chats is:`);
+            console.log(response.data);
+            store.Chat.conversations = response.data;
+            done();
+          })
+          .catch((error) => {
+            console.log("It puked getting the chats", error);
+            done();
           });
-        }
-
-        done();
         break;
       }
-
       default: {
-        if (store.Viewnotfound) {
-          render(store.Viewnotfound);
-        } else {
-          console.log(`View ${view} not defined`);
-        }
         done();
         break;
       }
     }
   },
-  already: (params) => {
-    console.log(params);
-    const view = params && params.data && params.data.view ? capitalize(params.data.view) : "Home";
-    if (store.hasOwnProperty(view)) {
-      render(store[view]);
-    } else {
-      if (store.Viewnotfound) {
-        render(store.Viewnotfound);
-      } else {
-        console.log(`View ${view} not defined`);
-      }
-    }
-  },
-after: (done, params) => {
-  console.log(params);
-  if (params && params.data && params.data.view === "Chat" && params.data.id) {
-    const chatId = params.data.id;
-    const message = store.Chat.messages[store.Chat.messages.length - 1];
-    axios
-      .put(`${PIZZA_PLACE_API_URL}/chats/${chatId}`, {
-        message,
-      })
-      .then((response) => {
-        store.Chat.messages.push(response.data);
-        render(store.Chat);
-        done();
-      })
-      .catch((error) => {
-        console.log("It puked", error);
-        done();
-      });
-  } else if (params && params.data && params.data.view === "Chat" && !params.data.id) {
-    axios
-      .get(`${PIZZA_PLACE_API_URL}/chats`)
-      .then((response) => {
-        store.Chat.chats = response.data;
-        done();
-      })
-      .catch((error) => {
-        console.log("It puked", error);
-        done();
-      });
-  } else {
-    render(store.Home);
-  }
-},
-      notfound: () => {
-        render(store.Viewnotfound);
-        done();
-      }
 });
-
 
 router
   .on({
-    "/": () => render(),
+    "/": () => render(store.Home),
     ":view": (params) => {
       let view = capitalize(params.data.view);
       if (store.hasOwnProperty(view)) {
@@ -252,5 +225,3 @@ router
     },
   })
   .resolve();
-
-

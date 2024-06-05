@@ -3,20 +3,18 @@ import mongoose from "mongoose";
 const chatSchema = new mongoose.Schema({
   userId: {
     type: String,
-    required: true,
-    validate: /^[A-Za-z0-9 ]*$/
+    required: true
   },
   message: {
     type: String,
-    required: true,
-    validate: /^[A-Za-z0-9 ]*$/
+    required: true
   },
   response: {
-    type: String,
-    validate: /^[A-Za-z0-9 ]*$/
+    type: String
   }
 });
 
 const Chat = mongoose.model("Chat", chatSchema);
 
 export default Chat;
+

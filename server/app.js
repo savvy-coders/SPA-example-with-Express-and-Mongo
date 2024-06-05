@@ -5,6 +5,7 @@ import pizzas from "./routers/pizzas.js";
 import orders from "./routers/orders.js";
 import customers from "./routers/customers.js";
 import chats from "./routers/chats.js";
+import chat from "../components/views/Chat.js";
 
 dotenv.config();
 
@@ -35,7 +36,7 @@ const cors = (req, res, next) => {
 app.use(cors);
 app.use(express.json());
 
-const MONGODB = process.env.MONGODB || "mongodb://localhost/pizza";
+const MONGODB = process.env.MONGODB;
 
 // Database connection
 mongoose.connect(
