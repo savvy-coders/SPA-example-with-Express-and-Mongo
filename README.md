@@ -1,3 +1,6 @@
+# This repo is deprecated and should not be used for any purpose including reference
+## Please see https://github.com/savvy-coders/SPA-example
+
 # SPA Example with Express and Mongo database
 
 ## Setup
