@@ -1,0 +1,20 @@
+/* === about-me === */
+
+#about-me {
+    margin: 1rem;
+}
+
+#about-me > h2 {
+    color: darkblue;
+    font-size: xx-large;
+}
+
+#about-me img {
+    border-radius: 75px;
+    max-height: 500px;
+}
+
+#bioFluff > p {
+    margin: 1rem;
+    font-size: 1.3rem;
+}

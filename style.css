@@ -4,11 +4,11 @@ body {
 
 header > h1 {
   margin: 5px;
-  color: blueviolet;
+  color: rgb(0, 107, 98);
 }
 
 #jumbotron {
-  background: url(assets/img/photo-1528334713982-2d1fe11a157a.jpg) center center no-repeat;
+  background: url(assets/img/wavey-grid.jpg) center center no-repeat;
   background-size: cover;
   display: flex;
   flex-direction: column;
@@ -17,102 +17,34 @@ header > h1 {
   height: 90vh;
 }
 
-#jumbotron > h2 {
+dialog {
+  position: relative;
+  border-radius: 10px;
+  padding-left: 2em;
+  padding-right: 2em;
+  font-weight: bold;
+  max-width: 90vw;
+}
+
+dialog > pre {
+  white-space: pre-wrap;
+}
+
+.dialog-success {
+  border-color: rgb(0, 107, 98);
+  background-color: rgba(0, 107, 98, 0.6);
   color: white;
+}
+
+.dialog-error {
+  border-color: #ff3e2c;
+  background-color: #ffe8e6;
+  color: #ff3e2c;
+}
+
+.text-center {
   text-align: center;
 }
-
-#jumbotron > a {
-  text-decoration: none;
-  background-color: white;
-  font-size: 1.5em;
-  padding: 1.5rem;
-  border-radius: 10px;
-}
-
-#jumbotron > a:hover {
-  font-weight: 700;
-}
-
-
-/* === BIO === */
-
-#bio {
-  margin: 1rem;
-}
-
-#bio > h2 {
-  color: rosybrown;
-  font-size: xx-large;
-  border: 1px solid red;
-}
-
-#bioFluff > p {
-  margin: 1rem;
-  font-size: 1.3rem;
-}
-
-
-/* === PIZZAS === */
-
-#pizzas {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1.2em;
-  height: auto;
-  width: 92.5%;
-  margin: 20px auto;
-  border: 1px solid black;
-  padding: 10px;
-}
-
-#pizzaTable{
-  min-height: 100px;
-  border: 1px solid black;
-}
-
-#pizzas tbody {
-  width: 100%;
-}
-
-#pizzas th {
-  text-align: left;
-}
-
-#pizzas td,th {
-  width: 25%;
-}
-
-/* === Order Form === */
-
-#order > h2 {
-  color: green;
-}
-
-form {
-  border: solid 1px black;
-  display: flex;
-  flex-direction: column;
-  margin: 1rem 1rem;
-}
-
-form > * {
-  margin: 0.5rem;
-}
-
-form > input[type="submit"] {
-  width: 40%;
-  margin: 0.5rem;
-  margin-right: auto;
-}
-
-/* === FOOTER === */
-
-footer {
-  border-top: solid 1px black;
-  padding: 2rem 2rem 4rem;
-  margin: 1rem 1rem;
-}
-
 
 @media (max-width: 549px){
   .hidden--mobile {
@@ -142,18 +74,12 @@ footer {
     list-style-type: none;
   }
 
-  #bio img {
-    float: left;
+  #about-me img {
     width: 40%;
     height: auto;
-    margin-right: 1rem;
-  }
-
-  #pizzaTable{
-    margin: 15px;
+    margin-left: 30%;
   }
 }
-
 
 @media (min-width: 550px) {
   nav > ul {
@@ -182,18 +108,14 @@ footer {
     display: none;
   }
 
-  #bio {
+  #about-me {
     margin-right: 3rem;
   }
 
-  #bio img {
+  #about-me img {
     float: left;
     width: 25%;
     height: auto;
     margin-right: 1rem;
-  }
-
-  #pizzaTable{
-    margin: 15px;
   }
 }
